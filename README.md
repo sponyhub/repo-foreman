@@ -1,10 +1,10 @@
 # RepoForeman
 
-> A gated, local workflow orchestrator for Codex CLI.
+> A deterministic delivery pipeline and governance layer for Codex CLI.
 
-RepoForeman turns a development brief into a structured engineering workflow: analysis, architecture, task planning, implementation, independent review, recovery, and final verification. It runs locally around `codex exec`, isolates work in Git worktrees by default, and leaves behind enough state to inspect, explain, or resume a run.
+RepoForeman turns a development brief into a structured engineering workflow: analysis, architecture, task planning, implementation, independent review, recovery, and final verification. It runs locally around `codex exec`, isolates work in Git worktrees by default, and records enough state to inspect, explain, or resume a run.
 
-The goal is simple: make agent-assisted coding behave more like a disciplined delivery process and less like one long, opaque prompt.
+The aim is simple: make agent-assisted coding behave more like a disciplined delivery process and less like an opaque sequence of prompts whose quality depends on one conversation staying on track.
 
 RepoForeman is an independent open-source project. It is not affiliated with, endorsed by, or supported by OpenAI. Codex and OpenAI are trademarks of their respective owner.
 
@@ -26,14 +26,14 @@ The current release is `0.1.0-beta.1`. Treat it as an early public beta:
 
 ## What RepoForeman adds
 
-Coding agents are capable, but long implementation runs introduce predictable failure modes:
+Coding agents are capable, and native Codex workflows already support long-running goals and delegated work. The remaining risks are usually process risks rather than a lack of model capability:
 
 - planning decisions disappear into conversation history;
 - implementation drifts away from the original acceptance criteria;
-- one agent reviews its own assumptions;
-- retries become unbounded and expensive;
+- implementation and review can share the same unexamined assumptions;
+- retry and recovery decisions remain conversational instead of bounded;
 - pre-existing test failures are confused with regressions;
-- an interrupted run has to start from scratch;
+- chat continuity does not create a repository-local, phase-aware recovery record;
 - the final answer says “done” without an inspectable delivery record.
 
 RepoForeman addresses those problems with explicit phases and deterministic gates:
@@ -50,6 +50,29 @@ RepoForeman addresses those problems with explicit phases and deterministic gate
 - local policy presets for commands, paths, and generated diffs.
 
 RepoForeman deliberately does **not** provide model access, authentication, a hosted service, a GitHub integration, or an operating-system security boundary.
+
+## Why not just use Codex Goal and subagents?
+
+[Codex Goal mode](https://learn.chatgpt.com/docs/long-running-work) is a strong default for long-running interactive work: it keeps an objective attached to a chat, continues toward its completion criteria, and supports pausing, resuming, editing, and steering. [Native Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents) can delegate independent exploration, implementation, testing, and review work while keeping noisy intermediate context away from the main thread.
+
+RepoForeman does not replace either capability. It adds a deterministic delivery contract around `codex exec` for cases where the workflow itself must be inspectable and repeatable:
+
+| Need | Native Codex | RepoForeman |
+| --- | --- | --- |
+| Continue a broad interactive objective | Goal tracks the outcome and keeps working toward it | Persists explicit pipeline, phase, task, and retry state on disk |
+| Delegate independent work | Subagents parallelize bounded work and summarize results | Builds and validates a dependency-aware task graph before execution |
+| Review a change | Review depth is directed through the prompt, agent roles, or project instructions | Runs predefined analysis, architecture, task, integration, and verification gates |
+| Recover after interruption | Resume the same goal or chat context | Reconstructs a run from fingerprinted artifacts and an append-only journal |
+| Control failure loops | Steer the agent or revise the goal | Enforces configured attempt, retry, diff-growth, and recovery budgets |
+| Distinguish regressions | Ask the agent to inspect the existing state | Records a verification baseline before implementation and compares final results |
+| Produce an audit trail | Inspect chat and agent threads | Writes schema-validated outputs, gate decisions, telemetry, and redacted local events |
+| Apply repository guardrails | Use Codex sandboxing, approvals, rules, hooks, and `AGENTS.md` | Adds phase-specific sandboxing plus local command, path, and generated-diff policies |
+
+Use native Codex directly for small, routine, highly interactive work where a chat, a clear goal, repository instructions, and optional subagents provide enough structure. It is the simpler path and usually requires fewer model calls.
+
+Use RepoForeman when a change is broad, security-sensitive, expensive to repeat, expected to run headlessly, or needs a reproducible review and verification record. It is also useful when an interrupted run must be explainable from repository-local artifacts rather than only from conversation history.
+
+The current beta invokes separate `codex exec` phases. It does not expose or replace the native Goal or subagent interfaces. Future releases may compose with native Codex capabilities where they improve execution without weakening RepoForeman's deterministic gates and artifact contract.
 
 ## How a run works
 
