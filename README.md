@@ -162,6 +162,12 @@ patch-gantry run --execution-profile strict --task-file ./task.md
 
 Profiles control review depth and retry budgets. They do not change the trust boundary of the repository. See [Configuration](docs/configuration.md) for the option groups and precedence rules.
 
+## Easy per-repository configuration
+
+You do not need to repeat every option on every run. Put model and reasoning defaults in the target repository's native `.codex/config.toml`, then save the PatchGantry policy, sandbox, search, worktree, and verification options in one repository script.
+
+See [Easy per-repository configuration](docs/easy-configuration.md) for copyable TOML and `package.json` examples. PatchGantry does not add a separate config-file parser in this beta.
+
 ## Interactive control
 
 Use conversational interaction when you want to steer a long run from the launching terminal:

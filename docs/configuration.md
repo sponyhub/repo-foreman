@@ -2,6 +2,8 @@
 
 PatchGantry combines its own CLI configuration with the configuration of the installed Codex CLI and the commands defined by the target repository. Those layers have different responsibilities.
 
+For a minimal copy-and-edit setup using `.codex/config.toml` and one repository script, see [Easy per-repository configuration](easy-configuration.md).
+
 ## Precedence
 
 For values PatchGantry controls, the intended precedence is:
@@ -77,6 +79,8 @@ patch-gantry run \
 ```
 
 PatchGantry does not guarantee that every Codex version supports every model or effort value. `doctor` and the underlying Codex CLI error are authoritative.
+
+For persistent per-repository defaults, set `model` and `model_reasoning_effort` in the target repository's `.codex/config.toml`. PatchGantry-specific options can be saved in a repository script as described in [Easy per-repository configuration](easy-configuration.md).
 
 ## Repository verification
 

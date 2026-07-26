@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+### Added
+
+- Added a copyable low-complexity configuration guide using native Codex project settings and repository command presets.
+
 ## [0.1.0-beta.1] - 2026-07-26
 
 ### Added

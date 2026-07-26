@@ -16,6 +16,7 @@ const publicDocumentPaths = [
   'docs/architecture.md',
   'docs/artifacts-and-privacy.md',
   'docs/configuration.md',
+  'docs/easy-configuration.md',
   'docs/orchestrator-reference.md',
   'docs/releasing.md',
 ]
