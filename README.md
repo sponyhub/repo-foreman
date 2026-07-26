@@ -22,7 +22,7 @@ The current release is `0.1.0-beta.1`. Treat it as an early public beta:
 - macOS and Linux are the supported platforms.
 - The tool is designed for trusted repositories and trusted task descriptions.
 - Files under `lib/` are internal implementation details, not a stable JavaScript API.
-- This source tree does not claim that an npm package or public repository has already been published. Verify provenance before installing anything under this name.
+- The source repository is public at [sponyhub/repo-foreman](https://github.com/sponyhub/repo-foreman). The npm package has not been published yet; verify provenance before installing anything under this name.
 
 ## What RepoForeman adds
 
@@ -240,18 +240,18 @@ repo-foreman run \
 
 Terminal commands include `/help`, `/status`, `/pause`, `/resume`, `/abort`, and `/replan [guidance]`. Steering is applied at supported boundaries and may interrupt and replay work. It is not guaranteed to inject text into an already running `codex exec` process.
 
-### Pin model behavior
+### Configure model behavior
 
-RepoForeman inherits model selection and reasoning effort from Codex unless you override them:
+RepoForeman uses a quality-first default of `gpt-5.6-sol` with `xhigh` reasoning effort. It passes both settings explicitly to Codex so a run does not silently change when the operator's global Codex configuration changes. Override either value for a specific run when cost, latency, or model availability requires it:
 
 ```bash
 repo-foreman run \
   --model <model-supported-by-your-codex-cli> \
-  --effort high \
+  --effort <effort-supported-by-your-codex-cli> \
   --task-file ./task.md
 ```
 
-For durable per-repository defaults, use `.codex/config.toml`. See [Easy per-repository configuration](docs/easy-configuration.md) for a copyable setup and a reusable `package.json` command preset.
+The optional Codex-based semantic branch-name helper remains fixed at `low` reasoning because it only produces a short branch descriptor. For durable per-repository overrides, save `--model` and `--effort` in a repository command preset. A project or global `.codex/config.toml` still controls direct Codex sessions, but does not override RepoForeman's explicit model settings. See [Easy per-repository configuration](docs/easy-configuration.md) for a copyable setup.
 
 ## Safe defaults
 
@@ -259,6 +259,8 @@ RepoForeman starts from restrictive public defaults:
 
 | Area | Default |
 | --- | --- |
+| Model | `gpt-5.6-sol` |
+| Reasoning effort | `xhigh` for pipeline phases; `low` for semantic branch naming |
 | Planning and review | Codex `read-only` sandbox |
 | Implementation and repair | Codex `workspace-write` sandbox |
 | Workspace network | off for child Codex executions |
@@ -332,7 +334,7 @@ Run `repo-foreman help` for the options implemented by the installed build. See 
 
 ## Cost and latency
 
-One run can invoke Codex many times. Planning, reviews, worker attempts, recovery, branch naming, and summaries all consume model calls. Strict profiles, large briefs, retries, and failed verification increase both runtime and usage.
+One run can invoke Codex many times. Planning, reviews, worker attempts, recovery, branch naming, and summaries all consume model calls. The quality-first `gpt-5.6-sol`/`xhigh` default, strict profiles, large briefs, retries, and failed verification can all increase runtime and usage.
 
 RepoForeman does not enforce a monetary budget. Before a broad run:
 

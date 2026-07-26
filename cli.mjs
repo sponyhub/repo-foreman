@@ -11,6 +11,8 @@ import {
   statusCommand,
 } from './lib/run.mjs'
 import {
+  DEFAULT_MODEL,
+  DEFAULT_MODEL_REASONING_EFFORT,
   ORCHESTRATOR_VERSION,
 } from './lib/manifest.mjs'
 
@@ -30,7 +32,8 @@ Commands:
   doctor    Preflight checks + hardening advice
 
 Runtime defaults:
-  Model and reasoning effort: inherited from Codex CLI config
+  Model: ${DEFAULT_MODEL}
+  Default reasoning effort: ${DEFAULT_MODEL_REASONING_EFFORT}
   Sandbox: read-only for planning/review; workspace-write for implementation
   Host-wide access: danger-full-access requires --unsafe-host-access
   Web search: disabled
@@ -41,8 +44,8 @@ Core options:
   --task "<text>" | --task-file <path>
   --run-id <id>
   --codex-bin "codex"
-  --model <model>       # optional; otherwise use Codex CLI config
-  --effort minimal|low|medium|high|xhigh|max|ultra
+  --model <model>       # override default: ${DEFAULT_MODEL}
+  --effort minimal|low|medium|high|xhigh|max|ultra  # default: ${DEFAULT_MODEL_REASONING_EFFORT}
   --sandbox read-only|workspace-write|danger-full-access
   --unsafe-host-access  # required acknowledgement for danger-full-access
   --branch-name-strategy opaque|heuristic|codex

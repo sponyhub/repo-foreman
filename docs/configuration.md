@@ -9,9 +9,9 @@ For a minimal copy-and-edit setup using `.codex/config.toml` and one repository 
 For values RepoForeman controls, the intended precedence is:
 
 1. explicit RepoForeman CLI option;
-2. environment-sensitive RepoForeman default, where documented;
-3. RepoForeman public default;
-4. inherited Codex CLI configuration for model settings not overridden by RepoForeman.
+2. configuration persisted in the run manifest when resuming;
+3. environment-sensitive RepoForeman default, where documented;
+4. RepoForeman public default.
 
 Run manifests record the resolved runtime configuration used for a run. Do not infer an old run's configuration from the defaults of a newer package.
 
@@ -26,7 +26,7 @@ Run manifests record the resolved runtime configuration used for a run. Do not i
 | Command policy | `strict` | Applies deny rules and secret-diff checks by default |
 | Allowlist mode | `monitor` | Reports deviations only when the active policy defines command prefixes |
 | Environment-file copying | off | Prevents automatic propagation of local secrets |
-| Model and effort | inherited | Respects the operator's Codex CLI configuration |
+| Model and effort | `gpt-5.6-sol` with `xhigh` | Keeps pipeline behavior explicit and reproducible across machines |
 | Worktree | on | Isolates a run from the launching checkout |
 | Worktree dependencies | `none` | Avoids implicit package installation and lifecycle scripts |
 | Event redaction | on | Reduces accidental secret persistence |
@@ -69,7 +69,7 @@ Even without file copying, child processes can inherit environment variables. La
 
 ## Model settings
 
-Without overrides, model selection and reasoning effort come from Codex CLI configuration. For reproducible evaluation, set both explicitly:
+RepoForeman defaults to `gpt-5.6-sol` with `xhigh` reasoning effort and passes both settings explicitly to every normal pipeline phase. The semantic branch-name helper uses `low` reasoning because its output is intentionally small. Override the pipeline defaults when cost, latency, evaluation design, or local model availability requires it:
 
 ```bash
 repo-foreman run \
@@ -78,9 +78,9 @@ repo-foreman run \
   --task-file ./task.md
 ```
 
-RepoForeman does not guarantee that every Codex version supports every model or effort value. `doctor` and the underlying Codex CLI error are authoritative.
+RepoForeman does not guarantee that every Codex version or account supports every model or effort value. `doctor` validates the required `codex exec` flag contract; the underlying Codex CLI error is authoritative for model availability.
 
-For persistent per-repository defaults, set `model` and `model_reasoning_effort` in the target repository's `.codex/config.toml`. RepoForeman-specific options can be saved in a repository script as described in [Easy per-repository configuration](easy-configuration.md).
+RepoForeman CLI flags take precedence over its built-in defaults. Because RepoForeman always supplies explicit model settings, `model` and `model_reasoning_effort` from project or global Codex configuration do not change a RepoForeman run. They still apply to direct Codex sessions. Save persistent RepoForeman overrides in a repository script as described in [Easy per-repository configuration](easy-configuration.md).
 
 ## Repository verification
 

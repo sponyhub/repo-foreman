@@ -18,7 +18,8 @@ describe('orchestrator runtime contract', () => {
     )
 
     expect(stdout).toContain('RepoForeman v0.1.0-beta.1')
-    expect(stdout).toContain('Model and reasoning effort: inherited from Codex CLI config')
+    expect(stdout).toContain('Model: gpt-5.6-sol')
+    expect(stdout).toContain('Default reasoning effort: xhigh')
     expect(stdout).toContain('Sandbox: read-only for planning/review; workspace-write for implementation')
     expect(stdout).toContain('Host-wide access: danger-full-access requires --unsafe-host-access')
     expect(stdout).toContain('Web search: disabled')

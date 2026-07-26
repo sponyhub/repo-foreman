@@ -58,11 +58,11 @@ const cli = await readFile(path.join(repoRoot, 'cli.mjs'), 'utf8')
 requireValue(cli.startsWith('#!/usr/bin/env node\n'), 'cli.mjs must start with a Node shebang')
 
 const privateSourcePatterns = [
-  /spreenity/i,
-  /socialschedulerv3/i,
-  /tools\/codex-orchestrator/i,
-  /npm run codex:team/i,
-  /check:migration-safety/i,
+  /\/Users\/[^/\s]+\/projects\//i,
+  /[A-Z]:\\Users\\/i,
+  /tools\/[^/\s]*orchestrator/i,
+  /npm run [^`\n]*:team/i,
+  /check:[^`\n]*migration/i,
 ]
 for (const relativePath of publicDocumentPaths) {
   const document = await readFile(path.join(repoRoot, relativePath), 'utf8')

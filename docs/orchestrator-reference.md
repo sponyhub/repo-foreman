@@ -79,8 +79,8 @@ Use `repo-foreman help` for the complete list and current defaults.
 | `--task <text>` | Inline task brief |
 | `--task-file <path>` | Read the task brief from a file |
 | `--codex-bin <command-or-path>` | Select the Codex CLI executable |
-| `--model <model>` | Override the model inherited from Codex CLI |
-| `--effort <level>` | Override reasoning effort inherited from Codex CLI |
+| `--model <model>` | Override the default `gpt-5.6-sol` model |
+| `--effort <level>` | Override the default `xhigh` reasoning effort |
 | `--execution-profile fast\|standard\|strict` | Select review depth and retry defaults |
 | `--mode autonomous\|interactive` | Select gate behavior when input is needed |
 | `--interaction-model phased\|conversational` | Select boundary-only or terminal steering behavior |

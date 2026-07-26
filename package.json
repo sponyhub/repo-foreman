@@ -3,6 +3,14 @@
   "version": "0.1.0-beta.1",
   "description": "Gated workflow orchestrator for Codex CLI.",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sponyhub/repo-foreman.git"
+  },
+  "homepage": "https://github.com/sponyhub/repo-foreman#readme",
+  "bugs": {
+    "url": "https://github.com/sponyhub/repo-foreman/issues"
+  },
   "bin": {
     "repo-foreman": "./cli.mjs"
   },

@@ -2,21 +2,47 @@
 
 RepoForeman intentionally does not add a second configuration-file parser. The lowest-complexity setup uses two configuration layers that already exist:
 
-1. `.codex/config.toml` for native Codex defaults such as model and reasoning effort;
-2. one target-repository script for RepoForeman workflow, policy, sandbox, search, worktree, and verification options.
+1. one target-repository script for RepoForeman model, reasoning, workflow, policy, sandbox, search, worktree, and verification options;
+2. optional `.codex/config.toml` settings for direct Codex sessions in the same repository.
 
 This keeps configuration visible and version-controlled without introducing another schema or precedence system.
 
-## 1. Set Codex defaults
+## 1. Save a RepoForeman preset
+
+For a repository with `package.json`, add one editable script:
+
+```json
+{
+  "scripts": {
+    "agent:run": "repo-foreman run --model gpt-5.6-sol --effort xhigh --execution-profile standard --sandbox workspace-write --policy strict --policy-allowlist-mode monitor --no-search --worktree-deps none --task-tests \"npm test\" --final-tests \"npm run lint && npm test\""
+  }
+}
+```
+
+The model and effort shown above match RepoForeman's built-in defaults. Keeping them in the preset makes a repository-specific choice visible and easy to edit. Adapt the verification commands to the repository, then supply only the task for each run:
+
+```bash
+npm run agent:run -- --task-file ./task.md
+```
+
+Command-line options appended after `--` remain available for one-off overrides. For example:
+
+```bash
+npm run agent:run -- --model <another-supported-model> --effort high --execution-profile strict --task-file ./security-task.md
+```
+
+If the repository is not managed with npm, put the same fixed options in its existing task runner, Makefile, or small local wrapper script.
+
+## 2. Configure direct Codex sessions, if needed
 
 Create `.codex/config.toml` in the trusted repository where RepoForeman will run:
 
 ```toml
-# Uncomment and replace this only when you want to pin a model supported by
-# your installed Codex CLI. If omitted, Codex selects its configured default.
-# model = "your-model-id"
+# These values apply to direct Codex sessions. RepoForeman passes its own
+# explicit model and reasoning values.
+model = "gpt-5.6-sol"
 
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 
 # Safe defaults for direct Codex sessions in this repository.
 approval_policy = "on-request"
@@ -27,42 +53,16 @@ web_search = "disabled"
 network_access = false
 ```
 
-Project `.codex/config.toml` files are loaded by Codex only for repositories it considers trusted. Commit the project file if RepoForeman-created Git worktrees should inherit it; an untracked file is not present in a new worktree. Keep personal cross-repository defaults in `~/.codex/config.toml` instead.
+Project `.codex/config.toml` files are loaded by Codex only for repositories it considers trusted. Commit the project file if direct Codex sessions opened in RepoForeman-created Git worktrees should see it; an untracked file is not present in a new worktree. Keep personal cross-repository defaults in `~/.codex/config.toml` instead.
 
-When `--model` and `--effort` are omitted, RepoForeman inherits `model` and `model_reasoning_effort` from Codex. RepoForeman passes explicit safety settings to each child execution, so its phase-specific sandbox, approval, network, and search controls take precedence over the corresponding native defaults during a RepoForeman run.
-
-## 2. Save a RepoForeman preset
-
-For a repository with `package.json`, add one editable script:
-
-```json
-{
-  "scripts": {
-    "agent:run": "repo-foreman run --execution-profile standard --sandbox workspace-write --policy strict --policy-allowlist-mode monitor --no-search --worktree-deps none --task-tests \"npm test\" --final-tests \"npm run lint && npm test\""
-  }
-}
-```
-
-Adapt the two verification commands to the repository. Then supply only the task for each run:
-
-```bash
-npm run agent:run -- --task-file ./task.md
-```
-
-Command-line options appended after `--` remain available for one-off overrides. For example:
-
-```bash
-npm run agent:run -- --execution-profile strict --task-file ./security-task.md
-```
-
-If the repository is not managed with npm, put the same fixed options in its existing task runner, Makefile, or small local wrapper script.
+RepoForeman passes explicit model, reasoning, sandbox, approval, network, and search controls to each child execution. Those values take precedence over the corresponding native defaults during a RepoForeman run.
 
 ## Where each setting belongs
 
 | Setting | Persistent location | One-off override |
 | --- | --- | --- |
-| Model | `.codex/config.toml` `model` | `--model` |
-| Reasoning effort | `.codex/config.toml` `model_reasoning_effort` | `--effort` |
+| Model | Repository script; built-in `gpt-5.6-sol` | `--model` |
+| Reasoning effort | Repository script; built-in `xhigh` | `--effort` |
 | Review depth and retry defaults | Repository script | `--execution-profile` |
 | Command/diff policy | Repository script | `--policy`, `--policy-file`, `--policy-allowlist-mode` |
 | Normal agent sandbox | Repository script or safe built-in default | `--sandbox` |

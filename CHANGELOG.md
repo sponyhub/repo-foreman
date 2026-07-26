@@ -10,6 +10,8 @@ All notable changes to this project are documented in this file. The format is b
 
 ### Changed
 
+- Added verified public GitHub source, homepage, and issue-tracker metadata for npm consumers.
+- Set the default pipeline model to `gpt-5.6-sol` with `xhigh` reasoning while preserving `--model` and `--effort` overrides.
 - Renamed the public project, npm package, CLI command, artifact directory, and branch prefix to RepoForeman.
 - Rewrote the README with the project's origin, delivery workflow, trust boundary, safe defaults, and practical usage examples.
 - Artifacts created by earlier local beta builds are not automatically discovered after the rename.

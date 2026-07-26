@@ -1,6 +1,6 @@
 # Release checklist
 
-This document describes a future public release process. Its presence does not mean that the package has been published or that a public Git remote exists.
+This document describes the public beta release process. The source repository is public; npm publication remains a separate, explicitly authorized step.
 
 ## Beta policy
 
@@ -32,7 +32,7 @@ Prereleases use Semantic Versioning identifiers and the npm `next` dist-tag. The
 
 ## Publish
 
-Before the first publication, the owner must configure the npm package ownership, account protection, provenance or trusted publishing, and a public source URL. Do not add guessed repository metadata to `package.json`.
+Before the first publication, the owner must configure npm package ownership, account protection, and provenance or trusted publishing. Confirm that the public source metadata in `package.json` matches the repository being released.
 
 For an authorized beta publication:
 
@@ -42,7 +42,7 @@ npm publish --tag next
 
 Never run `npm publish` from an unreviewed worktree or with an unexpected npm account. Verify with `npm whoami`, `npm config get registry`, the exact tarball contents, and the version immediately before publishing.
 
-No automated publish workflow should be enabled until repository identity and npm trusted-publishing configuration exist.
+No automated publish workflow should be enabled until npm trusted-publishing configuration exists.
 
 ## After publication
 

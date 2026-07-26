@@ -54,7 +54,7 @@ Options:
     expect(capability.summary).toContain('interrupt-and-replay')
   })
 
-  test('uses Codex CLI model configuration when no model override is provided', async () => {
+  test('uses the RepoForeman default model when no model override is provided', async () => {
     const { buildCodexExecArgs } = await import('../lib/codex.mjs')
 
     const args = buildCodexExecArgs({
@@ -65,7 +65,9 @@ Options:
       search: false,
     })
 
-    expect(args).not.toContain('--model')
+    const modelFlagIndex = args.indexOf('--model')
+    expect(modelFlagIndex).toBeGreaterThanOrEqual(0)
+    expect(args[modelFlagIndex + 1]).toBe('gpt-5.6-sol')
     expect(args).toEqual(expect.arrayContaining(['--ask-for-approval', 'on-request']))
     expect(args).toContain('sandbox_workspace_write.network_access=false')
   })
@@ -120,7 +122,7 @@ Options:
     expect(args).not.toContain('web_search_request')
   })
 
-  test('uses Codex CLI reasoning configuration when no effort override is provided', async () => {
+  test('uses the RepoForeman default reasoning effort when no override is provided', async () => {
     const { buildCodexExecArgs } = await import('../lib/codex.mjs')
 
     const args = buildCodexExecArgs({
@@ -131,7 +133,7 @@ Options:
       search: false,
     })
 
-    expect(args.some((entry) => entry.startsWith('model_reasoning_effort='))).toBe(false)
+    expect(args).toContain('model_reasoning_effort="xhigh"')
   })
 
   test('allows overriding reasoning effort', async () => {
