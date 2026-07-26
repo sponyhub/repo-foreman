@@ -10,8 +10,8 @@ Prereleases use Semantic Versioning identifiers and the npm `next` dist-tag. The
 
 1. Confirm that `package.json` and the runtime manifest report the intended version.
 2. Update `CHANGELOG.md` with a dated release entry.
-3. Confirm supported Node.js versions in package metadata, README, and CI.
-4. Run the full local check on both a supported macOS or Linux environment:
+3. Confirm supported Node.js versions and operating systems in package metadata and README.
+4. Run the full local check manually on each supported Node.js and operating-system combination claimed for the release:
 
    ```bash
    npm ci
@@ -28,7 +28,7 @@ Prereleases use Semantic Versioning identifiers and the npm `next` dist-tag. The
 
    Run the isolated self-test from the source checkout with `npm run self-test` before packing. The beta does not expose self-test as a public CLI command.
 
-7. Confirm all CI matrix jobs pass.
+7. Record the manual release-gate result for each supported combination.
 
 ## Publish
 
@@ -42,7 +42,7 @@ npm publish --tag next
 
 Never run `npm publish` from an unreviewed worktree or with an unexpected npm account. Verify with `npm whoami`, `npm config get registry`, the exact tarball contents, and the version immediately before publishing.
 
-No automated publish workflow should be enabled until npm trusted-publishing configuration exists.
+Publishing remains manual. Do not add an automated publication workflow without explicit maintainer approval.
 
 ## After publication
 

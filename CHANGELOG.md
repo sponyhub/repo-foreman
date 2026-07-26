@@ -16,6 +16,10 @@ All notable changes to this project are documented in this file. The format is b
 - Rewrote the README with the project's origin, delivery workflow, trust boundary, safe defaults, and practical usage examples.
 - Artifacts created by earlier local beta builds are not automatically discovered after the rename.
 
+### Removed
+
+- Removed GitHub Actions automation; repository and release verification are manual.
+
 ## [0.1.0-beta.1] - 2026-07-26
 
 ### Added
@@ -24,7 +28,7 @@ All notable changes to this project are documented in this file. The format is b
 - npm CLI entrypoint exposed as `repo-foreman`.
 - Gated analysis, architecture, task planning, implementation, review, recovery, and verification workflow around Codex CLI.
 - Git worktree isolation, resumable state, retry telemetry, policy presets, schemas, prompts, and an offline self-test.
-- Public package metadata, Apache-2.0 license, security policy, contributor guide, and macOS/Linux CI.
+- Public package metadata, Apache-2.0 license, security policy, contributor guide, and local release verification.
 
 ### Changed
 

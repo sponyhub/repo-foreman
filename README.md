@@ -94,7 +94,7 @@ Every loop has a configured attempt budget. Repeated failure becomes a visible g
 
 ## Requirements
 
-- Node.js `22.14.0` or newer. CI covers Node.js 22 and 24.
+- Node.js `22.14.0` or newer. Release verification should cover Node.js 22 and 24 manually.
 - npm compatible with the selected Node.js release.
 - Git with worktree support.
 - Codex CLI installed and available as `codex`.
@@ -348,10 +348,10 @@ RepoForeman does not enforce a monetary budget. Before a broad run:
 
 | Component | Status |
 | --- | --- |
-| macOS with Node.js 22/24 | Supported in CI |
-| Linux with Node.js 22/24 | Supported in CI |
+| macOS with Node.js 22/24 | Supported; verify manually before release |
+| Linux with Node.js 22/24 | Supported; verify manually before release |
 | Windows native | Not supported by this release |
-| WSL | Not currently covered by CI |
+| WSL | Not currently supported or included in release verification |
 | Codex CLI | External prerequisite; capabilities checked by `doctor` |
 | Git worktrees | Required for the default isolated workflow |
 

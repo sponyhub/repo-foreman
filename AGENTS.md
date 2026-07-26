@@ -19,7 +19,7 @@ RepoForeman is an early public beta. Keep changes focused, reviewable, and expli
 - RepoForeman remains a local, deterministic delivery and governance layer around Codex CLI. Do not present it as a model provider, hosted service, OS security boundary, or replacement for native Codex Goal and subagent interfaces.
 - Preserve restrictive defaults. Broader filesystem, network, environment, command, or host access must be explicit, visibly unsafe, and covered by tests and documentation.
 - Keep the published runtime dependency-free unless a maintainer explicitly approves changing that contract. Prefer Node.js built-ins.
-- Support the Node.js, operating-system, and Git worktree matrix documented in `package.json`, `README.md`, and `.github/workflows/ci.yml`.
+- Support the Node.js, operating-system, and Git worktree matrix documented in `package.json` and `README.md`; verify that matrix manually before a release.
 - Keep every planning, worker, review, recovery, and verification loop bounded. Exhaustion must produce an explainable failure or partial result, never an unbounded retry cycle.
 - Validate agent-produced structured data before it becomes executable state. A valid schema is necessary but does not prove factual correctness.
 - Treat command and diff policy as defense in depth, not as a shell parser or sandbox. Do not weaken the documented trust boundary.
@@ -62,7 +62,7 @@ Additional expectations:
 
 - Update `README.md` or the relevant file under `docs/` whenever behavior, defaults, CLI usage, artifacts, compatibility, security boundaries, or installation changes.
 - Update `CHANGELOG.md` for user-visible release changes.
-- Keep claims precise and testable. Do not claim affiliation with OpenAI, complete isolation, guaranteed security, platform support not covered by CI, npm availability before publication, or capabilities the installed Codex CLI does not expose.
+- Keep claims precise and testable. Do not claim affiliation with OpenAI, complete isolation, guaranteed security, platform support not covered by documented manual verification, npm availability before publication, or capabilities the installed Codex CLI does not expose.
 - Keep examples generic and safe to publish. Use placeholders for repository owners, model IDs, paths, and credentials.
 - Preserve working relative links and ensure public documentation does not reveal private repository names, paths, prompts, or business logic.
 
@@ -70,7 +70,7 @@ Additional expectations:
 
 - Preserve unrelated user changes in a dirty worktree and do not rewrite history unless explicitly requested.
 - Do not push branches, create releases, change repository visibility, publish to npm, add collaborators, or modify external repository settings without explicit authorization.
-- Before any authorized npm publication, verify the account, registry, version, dist-tag, public source URL, package contents, CI result, and release notes.
+- Before any authorized npm publication, verify the account, registry, version, dist-tag, public source URL, package contents, manual release-gate results, and release notes.
 - Keep commits focused and descriptive. A public pull request should explain behavior, verification, security/privacy impact, and remaining limitations.
 
 ## Code Review Rules
