@@ -5,7 +5,7 @@ import os from 'node:os'
 import path from 'node:path'
 import { execFileSync } from 'node:child_process'
 
-describe('PatchGantry git helpers', () => {
+describe('RepoForeman git helpers', () => {
   it('detects clean vs dirty worktrees', async () => {
     const { hasChanges } = await import('../lib/git.mjs')
 

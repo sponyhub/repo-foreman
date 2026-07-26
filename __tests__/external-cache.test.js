@@ -4,11 +4,11 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 
-describe('PatchGantry cache', () => {
+describe('RepoForeman cache', () => {
   it('returns cached output when present and not forced', async () => {
     const { maybeLoadCachedPhase } = await import('../lib/cache.mjs')
 
-    const tmpDir = mkdtempSync(path.join(os.tmpdir(), 'patch-gantry-cache-'))
+    const tmpDir = mkdtempSync(path.join(os.tmpdir(), 'repo-foreman-cache-'))
     try {
       const phaseDir = path.join(tmpDir, 'analysis')
       rmSync(phaseDir, { recursive: true, force: true })

@@ -17,11 +17,11 @@ describe('orchestrator runtime contract', () => {
       { cwd: repoRoot },
     )
 
-    expect(stdout).toContain('PatchGantry v0.1.0-beta.1')
+    expect(stdout).toContain('RepoForeman v0.1.0-beta.1')
     expect(stdout).toContain('Model and reasoning effort: inherited from Codex CLI config')
     expect(stdout).toContain('Sandbox: read-only for planning/review; workspace-write for implementation')
     expect(stdout).toContain('Host-wide access: danger-full-access requires --unsafe-host-access')
     expect(stdout).toContain('Web search: disabled')
-    expect(stdout).toContain('Branch names: opaque patch-gantry/run-<RUN_ID>')
+    expect(stdout).toContain('Branch names: opaque repo-foreman/run-<RUN_ID>')
   })
 })

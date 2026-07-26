@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-describe('PatchGantry mode', () => {
+describe('RepoForeman mode', () => {
   it('treats needs_user_input as non-blocking in autonomous mode', async () => {
     const { decideGateAction } = await import('../lib/mode.mjs')
 

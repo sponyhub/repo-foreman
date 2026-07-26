@@ -1,17 +1,17 @@
 # Configuration and safe defaults
 
-PatchGantry combines its own CLI configuration with the configuration of the installed Codex CLI and the commands defined by the target repository. Those layers have different responsibilities.
+RepoForeman combines its own CLI configuration with the configuration of the installed Codex CLI and the commands defined by the target repository. Those layers have different responsibilities.
 
 For a minimal copy-and-edit setup using `.codex/config.toml` and one repository script, see [Easy per-repository configuration](easy-configuration.md).
 
 ## Precedence
 
-For values PatchGantry controls, the intended precedence is:
+For values RepoForeman controls, the intended precedence is:
 
-1. explicit PatchGantry CLI option;
-2. environment-sensitive PatchGantry default, where documented;
-3. PatchGantry public default;
-4. inherited Codex CLI configuration for model settings not overridden by PatchGantry.
+1. explicit RepoForeman CLI option;
+2. environment-sensitive RepoForeman default, where documented;
+3. RepoForeman public default;
+4. inherited Codex CLI configuration for model settings not overridden by RepoForeman.
 
 Run manifests record the resolved runtime configuration used for a run. Do not infer an old run's configuration from the defaults of a newer package.
 
@@ -35,13 +35,13 @@ Stock policies currently define no `allow_command_prefixes`; their `monitor` set
 
 ## Search and network are different controls
 
-`--search` allows Codex web-search behavior supported by the installed CLI. By default PatchGantry disables search and configures the workspace-write Codex sandbox with network access off. This does not establish a system-wide offline guarantee: repository verification scripts and other subprocesses may run outside that agent sandbox and have their own network behavior.
+`--search` allows Codex web-search behavior supported by the installed CLI. By default RepoForeman disables search and configures the workspace-write Codex sandbox with network access off. This does not establish a system-wide offline guarantee: repository verification scripts and other subprocesses may run outside that agent sandbox and have their own network behavior.
 
 When offline execution is required, enforce it at the container, VM, firewall, or operating-system layer and verify the repository's commands independently.
 
 ## Sandbox and policy are different controls
 
-The Codex sandbox is the primary execution boundary selected for agent phases. PatchGantry's policy inspects commands and diffs for known-risk patterns. The policy may block or report an action, but it is not a complete shell parser and cannot replace OS isolation.
+The Codex sandbox is the primary execution boundary selected for agent phases. RepoForeman's policy inspects commands and diffs for known-risk patterns. The policy may block or report an action, but it is not a complete shell parser and cannot replace OS isolation.
 
 `--unsafe-host-access` opts into Codex `danger-full-access`. The name is intentionally explicit. Use it only when:
 
@@ -63,42 +63,42 @@ Both semantic strategies can leak names or sensitive task details into local pat
 
 ## Environment files
 
-PatchGantry does not copy `.env*` or `.npmrc` by default. The explicit `--copy-env-files` opt-in is limited to supported test files such as `.env.test` and `.env.test.local`; it must not be used as a path to propagate production credentials.
+RepoForeman does not copy `.env*` or `.npmrc` by default. The explicit `--copy-env-files` opt-in is limited to supported test files such as `.env.test` and `.env.test.local`; it must not be used as a path to propagate production credentials.
 
-Even without file copying, child processes can inherit environment variables. Launch PatchGantry from a minimally privileged shell and review the subprocess environment behavior of the installed version.
+Even without file copying, child processes can inherit environment variables. Launch RepoForeman from a minimally privileged shell and review the subprocess environment behavior of the installed version.
 
 ## Model settings
 
 Without overrides, model selection and reasoning effort come from Codex CLI configuration. For reproducible evaluation, set both explicitly:
 
 ```bash
-patch-gantry run \
+repo-foreman run \
   --model <model-supported-by-your-codex-cli> \
   --effort <effort-supported-by-your-codex-cli> \
   --task-file ./task.md
 ```
 
-PatchGantry does not guarantee that every Codex version supports every model or effort value. `doctor` and the underlying Codex CLI error are authoritative.
+RepoForeman does not guarantee that every Codex version supports every model or effort value. `doctor` and the underlying Codex CLI error are authoritative.
 
-For persistent per-repository defaults, set `model` and `model_reasoning_effort` in the target repository's `.codex/config.toml`. PatchGantry-specific options can be saved in a repository script as described in [Easy per-repository configuration](easy-configuration.md).
+For persistent per-repository defaults, set `model` and `model_reasoning_effort` in the target repository's `.codex/config.toml`. RepoForeman-specific options can be saved in a repository script as described in [Easy per-repository configuration](easy-configuration.md).
 
 ## Repository verification
 
 There is no universal command set for JavaScript, Python, Rust, monorepos, or mixed repositories. Define task and final checks that cover the actual change:
 
 ```bash
-patch-gantry run \
+repo-foreman run \
   --task-tests "npm test -- --runInBand" \
   --final-tests "npm run lint && npm run type-check && npm test" \
   --task-file ./task.md
 ```
 
-These owner-provided values execute through a shell outside the Codex sandbox and command-policy path, with a filtered environment. Task-graph schemas require model-produced verification lists to be empty, and PatchGantry replaces them with `--task-tests`; model-proposed shell strings are not retained. Avoid interpolation from untrusted input and quote paths containing spaces, parentheses, wildcards, or other shell metacharacters.
+These owner-provided values execute through a shell outside the Codex sandbox and command-policy path, with a filtered environment. Task-graph schemas require model-produced verification lists to be empty, and RepoForeman replaces them with `--task-tests`; model-proposed shell strings are not retained. Avoid interpolation from untrusted input and quote paths containing spaces, parentheses, wildcards, or other shell metacharacters.
 
 ## Planning-only dry runs
 
-`--dry-run` stops after the planning gates and forces agent phases to `read-only`. It rejects host-wide access, environment-file copying, and dependency materialization. It still creates a local branch, isolated worktree, and `.patch-gantry` artifacts so the plan can be inspected; it is not a zero-write command.
+`--dry-run` stops after the planning gates and forces agent phases to `read-only`. It rejects host-wide access, environment-file copying, and dependency materialization. It still creates a local branch, isolated worktree, and `.repo-foreman` artifacts so the plan can be inspected; it is not a zero-write command.
 
 ## CI behavior
 
-Running PatchGantry inside CI may select stricter review and verification behavior when flags are omitted. Pin the package version and pass important options explicitly in production automation. Never rely on a floating prerelease tag for a release gate.
+Running RepoForeman inside CI may select stricter review and verification behavior when flags are omitted. Pin the package version and pass important options explicitly in production automation. Never rely on a floating prerelease tag for a release gate.

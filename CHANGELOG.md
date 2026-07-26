@@ -8,12 +8,18 @@ All notable changes to this project are documented in this file. The format is b
 
 - Added a copyable low-complexity configuration guide using native Codex project settings and repository command presets.
 
+### Changed
+
+- Renamed the public project, npm package, CLI command, artifact directory, and branch prefix to RepoForeman.
+- Rewrote the README with the project's origin, delivery workflow, trust boundary, safe defaults, and practical usage examples.
+- Artifacts created by earlier local beta builds are not automatically discovered after the rename.
+
 ## [0.1.0-beta.1] - 2026-07-26
 
 ### Added
 
-- Initial standalone PatchGantry public beta.
-- npm CLI entrypoint exposed as `patch-gantry`.
+- Initial standalone RepoForeman public beta.
+- npm CLI entrypoint exposed as `repo-foreman`.
 - Gated analysis, architecture, task planning, implementation, review, recovery, and verification workflow around Codex CLI.
 - Git worktree isolation, resumable state, retry telemetry, policy presets, schemas, prompts, and an offline self-test.
 - Public package metadata, Apache-2.0 license, security policy, contributor guide, and macOS/Linux CI.

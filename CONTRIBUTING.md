@@ -1,6 +1,6 @@
-# Contributing to PatchGantry
+# Contributing to RepoForeman
 
-PatchGantry is an early public beta. Small, focused changes with tests and clear security consequences are easier to review than broad rewrites.
+RepoForeman is an early public beta. Small, focused changes with tests and clear security consequences are easier to review than broad rewrites.
 
 ## Before opening a change
 

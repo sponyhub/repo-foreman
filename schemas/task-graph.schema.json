@@ -61,7 +61,7 @@
             "type": "array",
             "maxItems": 0,
             "items": { "type": "string" },
-            "description": "Reserved field. PatchGantry injects only repository-owner verification commands after validating model output."
+            "description": "Reserved field. RepoForeman injects only repository-owner verification commands after validating model output."
           }
         },
         "required": [

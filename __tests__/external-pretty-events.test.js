@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-describe('PatchGantry pretty event output', () => {
+describe('RepoForeman pretty event output', () => {
   it('pretty prints JSON lines when enabled', async () => {
     const { formatCodexEventLine } = await import('../lib/run.mjs')
 

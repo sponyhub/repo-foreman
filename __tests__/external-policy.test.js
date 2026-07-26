@@ -2,7 +2,7 @@
 
 const TEST_AWS_KEY = ['AKIA', '12345678', '90ABCDEF'].join('')
 
-describe('PatchGantry policy', () => {
+describe('RepoForeman policy', () => {
   it('blocks forbidden commands in event streams', async () => {
     const { detectForbiddenContent } = await import('../lib/policy.mjs')
 

@@ -1,69 +1,109 @@
-# PatchGantry
+# RepoForeman
 
-> Gated workflow for Codex CLI.
+> A gated, local workflow orchestrator for Codex CLI.
 
-PatchGantry is a local, deterministic workflow around `codex exec`. It turns a development brief into explicit analysis, architecture, task planning, implementation, independent review, recovery, and verification phases. Every run writes inspectable state and phase artifacts so that a failure can be explained or resumed instead of silently starting over.
+RepoForeman turns a development brief into a structured engineering workflow: analysis, architecture, task planning, implementation, independent review, recovery, and final verification. It runs locally around `codex exec`, isolates work in Git worktrees by default, and leaves behind enough state to inspect, explain, or resume a run.
 
-PatchGantry is an independent community project. It is not affiliated with, endorsed by, or supported by OpenAI. Codex and OpenAI are trademarks of their respective owner.
+The goal is simple: make agent-assisted coding behave more like a disciplined delivery process and less like one long, opaque prompt.
+
+RepoForeman is an independent open-source project. It is not affiliated with, endorsed by, or supported by OpenAI. Codex and OpenAI are trademarks of their respective owner.
+
+## Why this project exists
+
+RepoForeman began while I was building a private software project. I needed a repeatable way to move from a rough feature request to a reviewed, tested change without relying on a single agent session to remember every decision and police its own work.
+
+The repository-local orchestration tooling became useful beyond that one application, so I decided to extract it, remove project-specific assumptions, harden the public defaults, and make it available as an open-source project. RepoForeman contains the reusable orchestration mechanics only; it does not contain the private project's application code, data, credentials, or business logic.
 
 ## Project status
 
-The current release is `0.1.0-beta.1`. It is an alpha-quality public beta:
+The current release is `0.1.0-beta.1`. Treat it as an early public beta:
 
 - CLI behavior and artifact formats may change between `0.x` releases.
 - macOS and Linux are the supported platforms.
-- The tool is intended for trusted repositories and trusted task descriptions.
-- There is no stability guarantee for importing files from `lib/`; PatchGantry is distributed as a CLI, not a JavaScript library.
-- No npm publication or public repository location is claimed by this source tree. Verify the package origin before installing it.
+- The tool is designed for trusted repositories and trusted task descriptions.
+- Files under `lib/` are internal implementation details, not a stable JavaScript API.
+- This source tree does not claim that an npm package or public repository has already been published. Verify provenance before installing anything under this name.
 
-## What it provides
+## What RepoForeman adds
 
-- Schema-validated outputs between agent phases.
-- A task graph with size, traceability, and shared-file conflict gates.
-- Isolated Git worktrees by default.
-- Bounded worker, review, replan, and verification retries.
-- Analysis, architecture, task, integration, and verification reviews.
-- Baseline verification to distinguish pre-existing failures from new regressions.
-- Resumable run state, an append-only resume journal, and retry telemetry.
-- Interactive and autonomous operation.
-- Local policy presets and redacted event artifacts.
+Coding agents are capable, but long implementation runs introduce predictable failure modes:
 
-PatchGantry deliberately does not provide a hosted service, model access, authentication, a GitHub integration, or an operating-system security boundary.
+- planning decisions disappear into conversation history;
+- implementation drifts away from the original acceptance criteria;
+- one agent reviews its own assumptions;
+- retries become unbounded and expensive;
+- pre-existing test failures are confused with regressions;
+- an interrupted run has to start from scratch;
+- the final answer says “done” without an inspectable delivery record.
 
-## Prerequisites
+RepoForeman addresses those problems with explicit phases and deterministic gates:
+
+- JSON Schema-validated phase outputs;
+- analysis, architecture, task-graph, task, integration, and verification reviews;
+- task traceability and shared-file conflict checks;
+- isolated Git worktrees and opaque branch names by default;
+- baseline verification before implementation begins;
+- bounded worker, review, fix, replan, and verification attempts;
+- resumable state with an append-only resume journal;
+- run status, explanations, retry telemetry, and redacted event artifacts;
+- interactive steering or autonomous execution;
+- local policy presets for commands, paths, and generated diffs.
+
+RepoForeman deliberately does **not** provide model access, authentication, a hosted service, a GitHub integration, or an operating-system security boundary.
+
+## How a run works
+
+```mermaid
+flowchart LR
+    A["Development brief"] --> B["Analysis and architecture gates"]
+    B --> C["Validated task graph"]
+    C --> D["Baseline verification"]
+    D --> E["Task implementation"]
+    E --> F{"Task review"}
+    F -- "Fix required" --> E
+    F -- "Pass" --> G["Integration review"]
+    G --> H{"Final verification"}
+    H -- "Bounded recovery" --> E
+    H -- "Pass" --> I["Summary and inspectable artifacts"]
+```
+
+Every loop has a configured attempt budget. Repeated failure becomes a visible gate result instead of an infinite agent loop.
+
+## Requirements
 
 - Node.js `22.14.0` or newer. CI covers Node.js 22 and 24.
 - npm compatible with the selected Node.js release.
 - Git with worktree support.
-- Codex CLI installed, available as `codex`, and authenticated.
+- Codex CLI installed and available as `codex`.
+- An authenticated Codex session.
 - A local Git repository containing the code to be changed.
 
-Confirm the external CLI first:
+Check Codex first:
 
 ```bash
 codex --version
 codex login status
 ```
 
-Codex CLI evolves independently from PatchGantry. Run `patch-gantry doctor` after installation to check the capabilities visible to this release. Passing `doctor` is a preflight signal, not a guarantee that every repository command will succeed.
+Codex CLI evolves independently from RepoForeman. After installation, run `repo-foreman doctor` to check the capabilities visible to this release. A passing preflight confirms the detected CLI contract; it does not prove that arbitrary repository commands are safe or successful.
 
 ## Installation
 
 ### From a local package tarball
 
-This is the reproducible option before an npm release exists:
+Use this reproducible path before an npm release exists:
 
 ```bash
-# In the PatchGantry source checkout
+# In the RepoForeman source checkout
 npm ci
 npm pack
 
 # In the repository where you want to use it
-npm install --save-dev /absolute/path/to/patch-gantry-0.1.0-beta.1.tgz
-npx patch-gantry doctor
+npm install --save-dev /absolute/path/to/repo-foreman-0.1.0-beta.1.tgz
+npx repo-foreman doctor
 ```
 
-Inspect the dry-run package listing before installing:
+Inspect the exact package contents before installing:
 
 ```bash
 npm pack --dry-run
@@ -74,164 +114,221 @@ npm pack --dry-run
 ```bash
 npm ci
 npm link
-patch-gantry doctor
+repo-foreman doctor
 ```
 
 ### From npm after publication
 
-The beta should be published under the `next` dist-tag. These commands become valid only after a maintainer has actually published the package:
+The beta should be published under the `next` dist-tag. These commands become valid only after a maintainer has published the package:
 
 ```bash
 # One-off
-npx --yes patch-gantry@next doctor
+npx --yes repo-foreman@next doctor
 
 # Global
-npm install --global patch-gantry@next
-patch-gantry doctor
+npm install --global repo-foreman@next
+repo-foreman doctor
 
 # Repository-local
-npm install --save-dev patch-gantry@next
-npx patch-gantry doctor
+npm install --save-dev repo-foreman@next
+npx repo-foreman doctor
 ```
 
-Do not treat the package name alone as proof of provenance. Check the npm owner, version, integrity metadata, and package contents.
+Do not treat a matching package name as proof of origin. Check the npm owner, version, integrity metadata, repository link, and tarball contents.
 
 ## Quick start
 
-Run PatchGantry from the root of a trusted Git repository:
+Run RepoForeman from the root of a trusted Git repository:
 
 ```bash
-patch-gantry doctor
-patch-gantry run --task "Add validation for the account settings form"
+repo-foreman doctor
+repo-foreman run --task "Add validation for the account settings form"
 ```
 
-For a longer brief:
+For a longer or reviewable brief:
 
 ```bash
-patch-gantry run --task-file ./task.md
+repo-foreman run --task-file ./task.md
 ```
 
-Operational commands:
+Inspect an active or completed run:
 
 ```bash
-patch-gantry list
-patch-gantry status --run-id <run-id>
-patch-gantry explain --run-id <run-id>
-patch-gantry resume --run-id <run-id>
+repo-foreman list
+repo-foreman status --run-id <run-id>
+repo-foreman explain --run-id <run-id>
+repo-foreman resume --run-id <run-id>
 ```
 
-Start with a small, reversible task. Review the generated task graph and Git diff before merging or pushing anything.
+Start with a small, reversible task. Read the generated task graph and inspect the Git diff before merging or pushing anything.
 
-## Safe defaults and their limits
+## Execution profiles
 
-The public beta is configured to reduce accidental exposure and overly broad execution:
+Profiles select review depth and retry defaults. They do not relax the repository trust boundary.
 
-- Branch names are opaque by default and do not derive words from the task. `heuristic` and Codex-generated names are opt-in.
-- Codex web search is off unless `--search` is passed.
-- Planning and review phases are read-only; worker and fix phases use `workspace-write` with Codex workspace network access disabled and approval set to `on-request`. Host-wide access requires `--unsafe-host-access`.
-- The command policy defaults to `strict`. Allowlist mode defaults to `monitor`, but stock policies currently define no command prefixes, so they provide deny/path/diff controls rather than allowlist diagnostics.
-- `.env*` and `.npmrc` files are not copied automatically. `--copy-env-files` is an explicit opt-in limited to test environment files supported by the CLI.
-- The model and reasoning effort inherit the user's Codex CLI configuration unless `--model` or `--effort` is provided.
-- Runs use an isolated Git worktree by default, without automatically installing dependencies.
-- Sensitive-looking values in event output are redacted by default.
-
-These controls reduce risk; they do not make untrusted code safe:
-
-- `workspace-write` still permits changes inside the selected workspace.
-- A repository's install, build, test, lint, and audit commands execute local code.
-- The policy layer is defense in depth, not a substitute for the Codex sandbox, OS isolation, or human review.
-- Allowlist `monitor` reports deviations only when the active custom policy defines `allow_command_prefixes`; it does not block commands outside that list.
-- Disabling Codex workspace network and web search is not the same as proving that every subprocess is offline. PatchGantry's repository verification commands execute separately; review and isolate them as needed.
-- `--unsafe-host-access` materially expands impact. Use it only in a disposable, isolated environment.
-- `--no-redact` writes a raw event transcript. Do not enable it for a run that may encounter credentials, personal data, or proprietary material.
-
-Do not run PatchGantry on code from an untrusted fork, an unreviewed archive, or a task copied from an unknown party. For higher-risk evaluation, use an ephemeral machine or container without personal credentials.
-
-## Choosing a profile
+| Profile | Best for | Review behavior |
+| --- | --- | --- |
+| `fast` | Small, routine, low-risk changes | Minimal review depth and retry budget |
+| `standard` | Normal feature and maintenance work | Balanced review depth and cost |
+| `strict` | Security-sensitive, broad, or high-impact changes | Deepest reviews and larger bounded recovery budget |
 
 ```bash
 # Small, routine change
-patch-gantry run --execution-profile fast --task-file ./task.md
+repo-foreman run --execution-profile fast --task-file ./task.md
 
-# Default balance of review depth and cost
-patch-gantry run --execution-profile standard --task-file ./task.md
+# Default balance
+repo-foreman run --execution-profile standard --task-file ./task.md
 
 # Security-sensitive or broad change
-patch-gantry run --execution-profile strict --task-file ./task.md
+repo-foreman run --execution-profile strict --task-file ./task.md
 ```
 
-Profiles control review depth and retry budgets. They do not change the trust boundary of the repository. See [Configuration](docs/configuration.md) for the option groups and precedence rules.
+## Common workflows
 
-## Easy per-repository configuration
-
-You do not need to repeat every option on every run. Put model and reasoning defaults in the target repository's native `.codex/config.toml`, then save the PatchGantry policy, sandbox, search, worktree, and verification options in one repository script.
-
-See [Easy per-repository configuration](docs/easy-configuration.md) for copyable TOML and `package.json` examples. PatchGantry does not add a separate config-file parser in this beta.
-
-## Interactive control
-
-Use conversational interaction when you want to steer a long run from the launching terminal:
+### Plan without implementation
 
 ```bash
-patch-gantry run \
+repo-foreman run \
+  --dry-run \
+  --task-file ./task.md
+```
+
+Dry-run mode stops after planning and forces agent phases to `read-only`. It still creates a local branch, worktree, and run artifacts so the plan can be inspected; it is not a zero-write command.
+
+### Define repository-specific verification
+
+```bash
+repo-foreman run \
+  --task-file ./task.md \
+  --task-tests "npm test -- --runInBand" \
+  --final-tests "npm run lint && npm run type-check && npm test"
+```
+
+These commands come from the repository owner. They execute through the host shell with a filtered environment but outside the Codex sandbox and command-policy path. Treat them as code: do not interpolate untrusted input, and quote paths containing shell metacharacters.
+
+### Steer a run interactively
+
+```bash
+repo-foreman run \
   --mode interactive \
   --interaction-model conversational \
   --task-file ./task.md
 ```
 
-Available terminal commands include `/help`, `/status`, `/pause`, `/resume`, `/abort`, and `/replan [guidance]`. Steering interrupts and replays work at supported boundaries; it is not guaranteed to inject text into an already running `codex exec` process.
+Terminal commands include `/help`, `/status`, `/pause`, `/resume`, `/abort`, and `/replan [guidance]`. Steering is applied at supported boundaries and may interrupt and replay work. It is not guaranteed to inject text into an already running `codex exec` process.
 
-## Repository verification
+### Pin model behavior
 
-PatchGantry cannot infer a perfect verification contract for every project. Pass commands that are correct for the target repository:
+RepoForeman inherits model selection and reasoning effort from Codex unless you override them:
 
 ```bash
-patch-gantry run \
-  --task-file ./task.md \
-  --task-tests "npm test -- --runInBand" \
-  --final-tests "npm run lint && npm test"
+repo-foreman run \
+  --model <model-supported-by-your-codex-cli> \
+  --effort high \
+  --task-file ./task.md
 ```
 
-Verification strings are shell commands supplied by the repository owner. Task-graph schemas reject model-proposed commands, and PatchGantry replaces each task's verification list with the configured `--task-tests` value. The resulting checks execute through the host shell with a filtered environment but ordinary host process and network permissions. Treat configured commands as code. A green command only proves what that command actually covers.
+For durable per-repository defaults, use `.codex/config.toml`. See [Easy per-repository configuration](docs/easy-configuration.md) for a copyable setup and a reusable `package.json` command preset.
+
+## Safe defaults
+
+RepoForeman starts from restrictive public defaults:
+
+| Area | Default |
+| --- | --- |
+| Planning and review | Codex `read-only` sandbox |
+| Implementation and repair | Codex `workspace-write` sandbox |
+| Workspace network | off for child Codex executions |
+| Approval policy | `on-request` |
+| Web search | off unless `--search` is passed |
+| Host-wide access | off; requires explicit `--unsafe-host-access` |
+| Command/diff policy | `strict` |
+| Policy allowlist mode | `monitor` |
+| Branch naming | opaque `repo-foreman/run-<run-id>` |
+| Worktree | enabled |
+| Worktree dependencies | `none` |
+| Environment-file copying | off |
+| Event redaction | on |
+
+Stock policies currently define no `allow_command_prefixes`. Their default `monitor` mode therefore provides deny, path, and diff controls without allowlist diagnostics. Use a custom policy to define permitted prefixes, and test it in monitor mode before enabling enforcement.
+
+## Security and trust boundary
+
+RepoForeman is for trusted local development work. It is **not** a safe executor for hostile repositories or hostile task descriptions.
+
+Important limitations:
+
+- `workspace-write` permits changes inside the selected workspace.
+- Install, build, test, lint, audit, and other repository commands execute local code.
+- The policy layer is defense in depth, not a complete shell parser or OS sandbox.
+- Disabling Codex workspace network and web search does not prove that every subprocess is offline.
+- Repository verification commands run as ordinary host processes and may have their own network behavior.
+- `--unsafe-host-access` selects `danger-full-access` and materially expands the impact of mistakes or malicious instructions.
+- `--no-redact` writes raw Codex event lines and can persist secrets or personal data.
+- Redaction is best effort, not a data-loss-prevention system.
+
+Do not use RepoForeman on an untrusted fork, an unreviewed archive, or a task copied from an unknown source. For higher-risk evaluation, use an ephemeral machine or container without personal credentials and enforce network restrictions outside RepoForeman.
+
+Read [SECURITY.md](SECURITY.md) before broad or sensitive runs.
 
 ## Artifacts, privacy, and retention
 
-Runs create local state, prompts, outputs, logs, retry events, and worktrees under `.patch-gantry/` in the target repository. The directory is ignored by this repository's `.gitignore`.
+Each run writes state beneath `.repo-foreman/` in the target repository:
 
-Artifacts can contain:
+```text
+.repo-foreman/
+├── runs/       # manifests, phase outputs, events, reviews, and summaries
+└── worktrees/  # isolated Git worktrees created for active runs
+```
 
-- task text and follow-up answers;
-- source excerpts, file paths, branch names, and diffs;
+Artifacts may include:
+
+- task descriptions and follow-up answers;
+- source excerpts, paths, branch names, and diffs;
 - commands and bounded command output;
-- model responses, review findings, and assumptions;
-- error details and retry telemetry.
+- model responses, assumptions, and review findings;
+- failures, retry events, and verification results.
 
-Never put secrets, tokens, customer data, or unnecessary personal data in task descriptions. Keep run directories out of Git and backups unless explicitly required. Delete them according to your own retention policy after the run is no longer needed. Redaction is best effort and must not be treated as a data-loss-prevention system.
+Never include secrets, tokens, customer data, or unnecessary personal information in task descriptions. Keep `.repo-foreman/` out of Git and backups unless retention is intentional. Remove run data according to your own retention policy after it is no longer needed.
 
-See [Artifacts and privacy](docs/artifacts-and-privacy.md) for a practical cleanup and incident checklist.
+See [Artifacts and privacy](docs/artifacts-and-privacy.md) for cleanup and incident guidance.
+
+## Command overview
+
+| Command | Purpose |
+| --- | --- |
+| `run` | Start a new gated workflow |
+| `resume` | Continue from persisted phase and task checkpoints |
+| `status` | Show run state and task progress |
+| `explain` | Summarize gates, failures, and diagnostics |
+| `list` | List runs found in the local artifact directory |
+| `doctor` | Check prerequisites and Codex CLI capabilities |
+| `promote` | Evaluate completed-run retry and outcome metrics |
+
+Run `repo-foreman help` for the options implemented by the installed build. See the full [CLI reference](docs/orchestrator-reference.md) and [configuration guide](docs/configuration.md) for option groups, precedence, policies, and retry controls.
 
 ## Cost and latency
 
-One PatchGantry run can invoke Codex many times: planning, reviews, worker attempts, recovery, and summary all consume model calls. Strict profiles, large tasks, retries, web search, and failed verification increase both runtime and API or subscription usage. PatchGantry does not set or enforce a monetary budget.
+One run can invoke Codex many times. Planning, reviews, worker attempts, recovery, branch naming, and summaries all consume model calls. Strict profiles, large briefs, retries, and failed verification increase both runtime and usage.
 
-Before a broad run:
+RepoForeman does not enforce a monetary budget. Before a broad run:
 
 - split unrelated work into separate briefs;
-- use the lightest review profile appropriate for the risk;
-- set bounded retry limits;
-- verify your Codex account's current pricing and limits;
-- monitor the run rather than assuming a single request equals a single model call.
+- use the lightest profile appropriate for the risk;
+- keep retry limits bounded;
+- check the current pricing and limits of your Codex account;
+- monitor the run instead of assuming one task equals one model call.
 
 ## Compatibility
 
 | Component | Status |
 | --- | --- |
-| macOS + Node.js 22/24 | Supported in CI |
-| Linux + Node.js 22/24 | Supported in CI |
-| Windows native | Not supported by this package release |
+| macOS with Node.js 22/24 | Supported in CI |
+| Linux with Node.js 22/24 | Supported in CI |
+| Windows native | Not supported by this release |
 | WSL | Not currently covered by CI |
-| Codex CLI | External prerequisite; capability checked by `doctor` |
-| Git worktrees | Required for the default run mode |
+| Codex CLI | External prerequisite; capabilities checked by `doctor` |
+| Git worktrees | Required for the default isolated workflow |
 
 ## Development
 
@@ -243,9 +340,24 @@ npm run self-test
 npm pack --dry-run
 ```
 
-The runtime uses only Node.js built-ins. Jest and Ajv are development-only test dependencies and are not installed for consumers when PatchGantry is used as a normal dependency.
+Run the complete release gate with:
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a change. Security reports belong in the private channel described in [SECURITY.md](SECURITY.md), not in a public issue.
+```bash
+npm run check
+```
+
+The published runtime is designed to use only Node.js built-ins. Jest and Ajv are development-only dependencies and are not installed as runtime dependencies for consumers.
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a change. Report vulnerabilities through the private process in [SECURITY.md](SECURITY.md), not through a public issue.
+
+## Documentation
+
+- [Configuration and safe defaults](docs/configuration.md)
+- [Easy per-repository configuration](docs/easy-configuration.md)
+- [CLI reference](docs/orchestrator-reference.md)
+- [Architecture](docs/architecture.md)
+- [Artifacts and privacy](docs/artifacts-and-privacy.md)
+- [Release process](docs/releasing.md)
 
 ## License
 

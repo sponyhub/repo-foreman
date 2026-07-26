@@ -1,6 +1,6 @@
 ROLE: Branch Name Slug Selector (read-only)
 
-You are generating a safe git branch slug for a PatchGantry run.
+You are generating a safe git branch slug for a RepoForeman run.
 
 Task context (condensed from the full task text):
 {{TASK_SUMMARY_LINE}}

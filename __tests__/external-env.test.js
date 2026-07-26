@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-describe('PatchGantry env filtering', () => {
+describe('RepoForeman env filtering', () => {
   it('excludes common secret env prefixes by default', async () => {
     const { buildCodexSubprocessEnv } = await import('../lib/env.mjs')
 

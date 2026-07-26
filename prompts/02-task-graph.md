@@ -44,7 +44,7 @@ Instructions:
   - Reference relevant architecture decision IDs (for example `D1`, `D2`) in each task `description` and/or `acceptance_criteria`.
   - Ensure every architecture decision ID is referenced by at least one task.
 - Incorporate planning context assumptions and task_hints into the task list.
-- Set every task's `verification_commands` to an empty array. PatchGantry later replaces this field with the repository-owner command `{{TEST_COMMAND}}`; never emit or invent shell commands yourself.
+- Set every task's `verification_commands` to an empty array. RepoForeman later replaces this field with the repository-owner command `{{TEST_COMMAND}}`; never emit or invent shell commands yourself.
 
 AUTONOMY RULE (V2.3):
 - Treat explicit requirements in task docs/repo docs as authoritative.

@@ -1,10 +1,10 @@
 {
-  "name": "patch-gantry",
+  "name": "repo-foreman",
   "version": "0.1.0-beta.1",
-  "description": "Gated workflow for Codex CLI.",
+  "description": "Gated workflow orchestrator for Codex CLI.",
   "license": "Apache-2.0",
   "bin": {
-    "patch-gantry": "./cli.mjs"
+    "repo-foreman": "./cli.mjs"
   },
   "files": [
     "cli.mjs",
@@ -59,10 +59,10 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/.patch-gantry/"
+      "/.repo-foreman/"
     ],
     "modulePathIgnorePatterns": [
-      "<rootDir>/.patch-gantry/"
+      "<rootDir>/.repo-foreman/"
     ],
     "collectCoverageFrom": [
       "lib/**/*.mjs",

@@ -15,10 +15,10 @@ import {
 } from './lib/manifest.mjs'
 
 function printHelp() {
-  console.log(`PatchGantry v${ORCHESTRATOR_VERSION}
+  console.log(`RepoForeman v${ORCHESTRATOR_VERSION}
 
 Usage:
-  patch-gantry <command> [options]
+  repo-foreman <command> [options]
 
 Commands:
   run       Run full pipeline
@@ -35,7 +35,7 @@ Runtime defaults:
   Host-wide access: danger-full-access requires --unsafe-host-access
   Web search: disabled
   Policy: strict; allowlist mode monitor (effective only with configured prefixes)
-  Branch names: opaque patch-gantry/run-<RUN_ID>
+  Branch names: opaque repo-foreman/run-<RUN_ID>
 
 Core options:
   --task "<text>" | --task-file <path>

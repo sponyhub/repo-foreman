@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url'
 const execFileAsync = promisify(execFile)
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm'
-const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'patch-gantry-package-smoke-'))
+const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'repo-foreman-package-smoke-'))
 
 async function run(command, args, cwd) {
   return await execFileAsync(command, args, {
@@ -27,7 +27,7 @@ try {
   await mkdir(consumerDir, { recursive: true })
   await writeFile(
     path.join(consumerDir, 'package.json'),
-    `${JSON.stringify({ name: 'patch-gantry-smoke-consumer', version: '1.0.0', private: true }, null, 2)}\n`,
+    `${JSON.stringify({ name: 'repo-foreman-smoke-consumer', version: '1.0.0', private: true }, null, 2)}\n`,
     'utf8',
   )
 
@@ -49,10 +49,10 @@ try {
     consumerDir,
   )
 
-  const installedBin = path.join(consumerDir, 'node_modules', '.bin', 'patch-gantry')
+  const installedBin = path.join(consumerDir, 'node_modules', '.bin', 'repo-foreman')
   const help = await run(installedBin, ['help'], consumerDir)
-  if (!help.stdout.includes('PatchGantry v0.1.0-beta.1') || !help.stdout.includes('patch-gantry <command>')) {
-    throw new Error('installed patch-gantry bin returned unexpected help output')
+  if (!help.stdout.includes('RepoForeman v0.1.0-beta.1') || !help.stdout.includes('repo-foreman <command>')) {
+    throw new Error('installed repo-foreman bin returned unexpected help output')
   }
 
   console.log(`PASS packed CLI install and help (${filename})`)

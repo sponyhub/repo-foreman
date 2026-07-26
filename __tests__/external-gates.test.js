@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-describe('PatchGantry gates', () => {
+describe('RepoForeman gates', () => {
   it('rejects an empty task graph', async () => {
     const { validateTaskGraph } = await import('../lib/gates.mjs')
 

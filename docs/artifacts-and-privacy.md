@@ -1,13 +1,13 @@
 # Artifacts, privacy, and retention
 
-PatchGantry persists run state so work can be audited, explained, and resumed. Persistence is useful operationally and creates a local data-handling responsibility.
+RepoForeman persists run state so work can be audited, explained, and resumed. Persistence is useful operationally and creates a local data-handling responsibility.
 
 ## Artifact layout
 
 A run typically contains:
 
 ```text
-.patch-gantry/
+.repo-foreman/
 ├── runs/
 │   └── <run>/
 │       ├── manifest.json
@@ -60,7 +60,7 @@ Use Git to inspect registered worktrees before manual cleanup:
 git worktree list
 ```
 
-Prefer PatchGantry's own cleanup command when the installed release provides one. If manual removal is necessary, identify the exact run and worktree paths first. Do not recursively remove a broad projects directory or a path constructed from an unresolved variable.
+Prefer RepoForeman's own cleanup command when the installed release provides one. If manual removal is necessary, identify the exact run and worktree paths first. Do not recursively remove a broad projects directory or a path constructed from an unresolved variable.
 
 ## Suspected exposure
 
@@ -71,6 +71,6 @@ If a credential or sensitive record appears in an artifact:
 3. preserve only the minimum sanitized evidence needed to diagnose the issue;
 4. remove the sensitive artifact from worktrees, backups, and shared logs;
 5. check Git history and remote refs before assuming it stayed local;
-6. privately report a PatchGantry redaction or isolation flaw according to [SECURITY.md](../SECURITY.md).
+6. privately report a RepoForeman redaction or isolation flaw according to [SECURITY.md](../SECURITY.md).
 
 Deleting the local file is not sufficient if the value was sent to a model, external search provider, remote package registry, CI log, or Git remote. Follow the retention and incident process of every affected service.

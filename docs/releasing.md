@@ -22,8 +22,8 @@ Prereleases use Semantic Versioning identifiers and the npm `next` dist-tag. The
 6. Install the tarball into a disposable Git repository and run:
 
    ```bash
-   npx patch-gantry help
-   npx patch-gantry doctor
+   npx repo-foreman help
+   npx repo-foreman doctor
    ```
 
    Run the isolated self-test from the source checkout with `npm run self-test` before packing. The beta does not expose self-test as a public CLI command.
@@ -46,7 +46,7 @@ No automated publish workflow should be enabled until repository identity and np
 
 ## After publication
 
-1. Verify that `npm view patch-gantry@next` reports the expected version, license, engines, owners, integrity, and zero runtime dependencies.
+1. Verify that `npm view repo-foreman@next` reports the expected version, license, engines, owners, integrity, and zero runtime dependencies.
 2. Install by exact version in a clean environment and run help, doctor, and the package smoke test.
 3. Create release notes from the changelog without overstating platform or security guarantees.
 4. Keep the prior prerelease available long enough to diagnose regressions; use npm deprecation messages rather than unpublishing except for urgent security or legal reasons.

@@ -26,13 +26,13 @@ async function initRepo(repoDir) {
 
 describe('git worktree helpers', () => {
   test('createWorktreeWithNewBranch creates a worktree without switching the main worktree branch', async () => {
-    const repoDir = await mkdtemp(path.join(os.tmpdir(), 'patch-gantry-'))
+    const repoDir = await mkdtemp(path.join(os.tmpdir(), 'repo-foreman-'))
     try {
       await initRepo(repoDir)
       const baseSha = await runGit(repoDir, ['rev-parse', 'HEAD'])
 
       const branchName = 'test-run'
-      const worktreePath = path.join(repoDir, '.patch-gantry', 'worktrees', 'test-run')
+      const worktreePath = path.join(repoDir, '.repo-foreman', 'worktrees', 'test-run')
 
       const { createWorktreeWithNewBranch } = await import('../lib/git.mjs')
       await createWorktreeWithNewBranch(repoDir, { worktreePath, branchName, baseRef: baseSha })
@@ -46,13 +46,13 @@ describe('git worktree helpers', () => {
   })
 
   test('createWorktreeForExistingBranch checks out an existing branch into a worktree directory', async () => {
-    const repoDir = await mkdtemp(path.join(os.tmpdir(), 'patch-gantry-'))
+    const repoDir = await mkdtemp(path.join(os.tmpdir(), 'repo-foreman-'))
     try {
       await initRepo(repoDir)
       const baseSha = await runGit(repoDir, ['rev-parse', 'HEAD'])
       await runGit(repoDir, ['branch', 'feature'])
 
-      const worktreePath = path.join(repoDir, '.patch-gantry', 'worktrees', 'feature-worktree')
+      const worktreePath = path.join(repoDir, '.repo-foreman', 'worktrees', 'feature-worktree')
 
       const { createWorktreeForExistingBranch } = await import('../lib/git.mjs')
       await createWorktreeForExistingBranch(repoDir, { worktreePath, branchName: 'feature' })

@@ -1,6 +1,6 @@
 # Security policy
 
-PatchGantry launches an AI coding agent and repository-defined commands. Its security model assumes that the operator trusts the target repository, task description, verification commands, and local Codex installation.
+RepoForeman launches an AI coding agent and repository-defined commands. Its security model assumes that the operator trusts the target repository, task description, verification commands, and local Codex installation.
 
 ## Supported releases
 
@@ -17,7 +17,7 @@ Do not disclose a suspected vulnerability, exploit, secret, or sensitive artifac
 
 Use GitHub private vulnerability reporting from the repository's **Security** tab when it is available. If that channel is not enabled, contact the repository owner privately using the contact method displayed on the owner's profile. Include:
 
-- affected PatchGantry version and platform;
+- affected RepoForeman version and platform;
 - a minimal reproduction using synthetic data;
 - the expected and observed security boundary;
 - whether credentials, host files, Git history, or run artifacts may be exposed;
@@ -27,7 +27,7 @@ Remove tokens, personal data, proprietary source, and raw model transcripts from
 
 ## Trust boundary
 
-PatchGantry is designed for trusted local development repositories. It is not a hardened executor for hostile code.
+RepoForeman is designed for trusted local development repositories. It is not a hardened executor for hostile code.
 
 The following are outside its security boundary:
 
@@ -62,7 +62,7 @@ After a run:
 
 ## Dependency and network posture
 
-The published runtime is intended to have zero npm dependencies and uses Node.js built-ins. Development dependencies are not part of the runtime trust claim. PatchGantry invokes external programs including Git, Codex CLI, the shell, and repository-defined tools; each has its own dependency and network behavior.
+The published runtime is intended to have zero npm dependencies and uses Node.js built-ins. Development dependencies are not part of the runtime trust claim. RepoForeman invokes external programs including Git, Codex CLI, the shell, and repository-defined tools; each has its own dependency and network behavior.
 
 The beta's Jest test toolchain currently has upstream transitive advisories reported by a full `npm audit`; those packages are not included in the published runtime tarball. CI treats `npm audit --omit=dev --audit-level=high` as the blocking runtime gate and reports the full development audit separately. Contributors still execute the development toolchain, so maintainers must reassess these advisories on every Jest update and should not use unreviewed test inputs.
 

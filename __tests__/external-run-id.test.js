@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-describe('PatchGantry run id', () => {
+describe('RepoForeman run id', () => {
   it('generates a stable, filesystem-safe run id', async () => {
     const { generateRunId } = await import('../lib/run.mjs')
 

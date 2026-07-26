@@ -11,9 +11,9 @@ describe('run/worktree path naming', () => {
     const branchName = 'oauth-csrf-20250101T000000-abcdef'
     const resolved = resolveRunAndWorktreePaths({ branchName })
 
-    expect(resolved.runRelativePath).toBe(path.join('.patch-gantry', 'runs', 'oauth-csrf-20250101T000000-abcdef'))
+    expect(resolved.runRelativePath).toBe(path.join('.repo-foreman', 'runs', 'oauth-csrf-20250101T000000-abcdef'))
     expect(resolved.worktreeRelativePath).toBe(
-      path.join('.patch-gantry', 'worktrees', 'oauth-csrf-20250101T000000-abcdef'),
+      path.join('.repo-foreman', 'worktrees', 'oauth-csrf-20250101T000000-abcdef'),
     )
   })
 

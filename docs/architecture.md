@@ -1,6 +1,6 @@
 # Architecture
 
-PatchGantry is a local state machine around Codex CLI, Git, repository commands, prompt templates, and JSON schemas. The npm package has no runtime JavaScript dependencies; external executables remain part of the operational dependency chain.
+RepoForeman is a local state machine around Codex CLI, Git, repository commands, prompt templates, and JSON schemas. The npm package has no runtime JavaScript dependencies; external executables remain part of the operational dependency chain.
 
 ## Main components
 
@@ -47,7 +47,7 @@ Analysis, architecture, task-graph, review, and summary phases run read-only. Wo
 
 ## Recovery model
 
-PatchGantry uses several bounded recovery mechanisms:
+RepoForeman uses several bounded recovery mechanisms:
 
 - phase retries after invalid structured output;
 - task-graph replanning after deterministic gate failures;
@@ -66,7 +66,7 @@ The execution path crosses several boundaries:
 - operator input into prompts and branch metadata;
 - repository content into model context;
 - model output into validated state and selected commands;
-- PatchGantry into Codex, Git, shells, package managers, and test runners;
+- RepoForeman into Codex, Git, shells, package managers, and test runners;
 - command and model output into persistent artifacts.
 
 Controls include schemas, bounded context, redaction, strict policy presets, worktrees, sandbox selection, secret-diff detection, and bounded retries. See [SECURITY.md](../SECURITY.md) for the assumptions these controls do not cover.

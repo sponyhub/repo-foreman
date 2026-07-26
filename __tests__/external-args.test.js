@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-describe('PatchGantry CLI args', () => {
+describe('RepoForeman CLI args', () => {
   it('defaults to the strict policy preset', async () => {
     const { parseArgs } = await import('../lib/args.mjs')
     const previousCi = process.env.CI

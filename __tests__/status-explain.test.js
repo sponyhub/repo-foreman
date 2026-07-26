@@ -14,7 +14,7 @@ describe('status and explain conversational reporting', () => {
     const previousCwd = process.cwd()
     const runId = 'run-123'
     const branchName = 'feature/run-123'
-    const runDir = path.join(tmpDir, '.patch-gantry', 'runs', 'feature', 'run-123')
+    const runDir = path.join(tmpDir, '.repo-foreman', 'runs', 'feature', 'run-123')
     const phasesDir = path.join(runDir, 'phases', 'analysis')
 
     try {

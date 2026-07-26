@@ -4,7 +4,7 @@
 
 const path = require('node:path')
 
-describe('patch-gantry policy presets', () => {
+describe('repo-foreman policy presets', () => {
   const basePolicy = {
     version: 2,
     name: 'test',

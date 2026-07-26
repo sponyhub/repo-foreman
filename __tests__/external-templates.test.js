@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-describe('PatchGantry prompt JSON rendering', () => {
+describe('RepoForeman prompt JSON rendering', () => {
   it('truncates large JSON payloads for prompt inlining', async () => {
     const { jsonStringifyForPrompt } = await import('../lib/templates.mjs')
 

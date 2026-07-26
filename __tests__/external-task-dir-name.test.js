@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-describe('PatchGantry task dir naming', () => {
+describe('RepoForeman task dir naming', () => {
   it('derives a deterministic slug from the task title', async () => {
     const { deriveTaskDirSlug } = await import('../lib/task-dir-name.mjs')
 

@@ -34,8 +34,8 @@ Fix OAuth callback CSRF in dev
     const { makeRunBranchName } = await import('../lib/branch-name.mjs')
 
     const runId = '20250101T000000-abcdef'
-    const branch = makeRunBranchName({ runId, taskText: 'Implement a better branch name for Patch Gantry runs' })
+    const branch = makeRunBranchName({ runId, taskText: 'Implement a better branch name for Repo Foreman' })
 
-    expect(branch).toBe(`better-branch-name-patch-gantry-${runId}`)
+    expect(branch).toBe(`better-branch-name-repo-foreman-${runId}`)
   })
 })

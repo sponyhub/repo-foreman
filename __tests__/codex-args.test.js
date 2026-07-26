@@ -3,7 +3,7 @@
  */
 
 describe('codex exec arg construction', () => {
-  test('requires the public Codex exec flags used by PatchGantry', async () => {
+  test('requires the public Codex exec flags used by RepoForeman', async () => {
     const { assessCodexCliContract } = await import('../lib/codex.mjs')
     const supported = assessCodexCliContract({
       cliVersion: 'codex-cli test',

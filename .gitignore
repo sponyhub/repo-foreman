@@ -1,8 +1,8 @@
 node_modules/
 coverage/
 
-# PatchGantry run artifacts and worktrees may contain sensitive context.
-.patch-gantry/
+# RepoForeman run artifacts and worktrees may contain sensitive context.
+.repo-foreman/
 .co-*/
 
 # Package and tool output.

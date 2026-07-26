@@ -1,6 +1,6 @@
 # CLI reference
 
-PatchGantry is a command-line application. Run `patch-gantry help` for the options implemented by the installed version; that output is authoritative when this document and a beta build differ.
+RepoForeman is a command-line application. Run `repo-foreman help` for the options implemented by the installed version; that output is authoritative when this document and a beta build differ.
 
 ## Commands
 
@@ -9,8 +9,8 @@ PatchGantry is a command-line application. Run `patch-gantry help` for the optio
 Starts a new gated workflow in the current Git repository.
 
 ```bash
-patch-gantry run --task "Describe the intended change"
-patch-gantry run --task-file ./task.md
+repo-foreman run --task "Describe the intended change"
+repo-foreman run --task-file ./task.md
 ```
 
 Exactly one task source should be supplied. A normal run creates an opaque branch and isolated worktree, captures the base commit, plans the change, executes approved tasks, verifies the repository, and writes a final summary.
@@ -20,7 +20,7 @@ Exactly one task source should be supplied. A normal run creates an opaque branc
 Continues a run from persisted phase and task checkpoints.
 
 ```bash
-patch-gantry resume --run-id <run-id>
+repo-foreman resume --run-id <run-id>
 ```
 
 Resume is artifact-aware but fail-safe: if required output is missing or does not match the current input fingerprint, the relevant phase runs again. Already committed tasks are guarded against duplicate commits.
@@ -30,7 +30,7 @@ Resume is artifact-aware but fail-safe: if required output is missing or does no
 Prints persisted run state and task progress.
 
 ```bash
-patch-gantry status --run-id <run-id>
+repo-foreman status --run-id <run-id>
 ```
 
 ### `explain`
@@ -38,7 +38,7 @@ patch-gantry status --run-id <run-id>
 Summarizes gate decisions, phase failures, and diagnostics for a run.
 
 ```bash
-patch-gantry explain --run-id <run-id>
+repo-foreman explain --run-id <run-id>
 ```
 
 ### `list`
@@ -46,7 +46,7 @@ patch-gantry explain --run-id <run-id>
 Lists local runs discovered under the artifact directory.
 
 ```bash
-patch-gantry list
+repo-foreman list
 ```
 
 ### `doctor`
@@ -54,8 +54,8 @@ patch-gantry list
 Checks local prerequisites and reports capability and hardening advice.
 
 ```bash
-patch-gantry doctor
-patch-gantry doctor --codex-bin /absolute/path/to/codex
+repo-foreman doctor
+repo-foreman doctor --codex-bin /absolute/path/to/codex
 ```
 
 Doctor does not authenticate on the user's behalf and does not prove that target-repository commands are safe.
@@ -65,14 +65,14 @@ Doctor does not authenticate on the user's behalf and does not prove that target
 Evaluates retry and outcome metrics from completed run artifacts before a review profile is promoted to a new organizational default.
 
 ```bash
-patch-gantry promote --promotion-sample-size 30
+repo-foreman promote --promotion-sample-size 30
 ```
 
 This is an artifact analysis command; it does not publish packages or change Codex configuration.
 
 ## Common run options
 
-Use `patch-gantry help` for the complete list and current defaults.
+Use `repo-foreman help` for the complete list and current defaults.
 
 | Option | Purpose |
 | --- | --- |
@@ -101,7 +101,7 @@ Use `patch-gantry help` for the complete list and current defaults.
 
 ## Review and retry controls
 
-PatchGantry bounds retry loops. Important controls include:
+RepoForeman bounds retry loops. Important controls include:
 
 - `--max-task-graph-attempts`
 - `--max-worker-attempts`

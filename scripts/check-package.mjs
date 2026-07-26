@@ -25,12 +25,15 @@ function requireValue(condition, message) {
   if (!condition) failures.push(message)
 }
 
-requireValue(packageJson.name === 'patch-gantry', 'package name must be patch-gantry')
+requireValue(packageJson.name === 'repo-foreman', 'package name must be repo-foreman')
 requireValue(packageJson.version === '0.1.0-beta.1', 'package version must be 0.1.0-beta.1')
 requireValue(packageJson.version === ORCHESTRATOR_VERSION, 'package and runtime manifest versions must match')
-requireValue(packageJson.description === 'Gated workflow for Codex CLI.', 'package description must match the tagline')
+requireValue(
+  packageJson.description === 'Gated workflow orchestrator for Codex CLI.',
+  'package description must match the tagline',
+)
 requireValue(packageJson.license === 'Apache-2.0', 'package license must be Apache-2.0')
-requireValue(packageJson.bin?.['patch-gantry'] === './cli.mjs', 'patch-gantry bin must point to ./cli.mjs')
+requireValue(packageJson.bin?.['repo-foreman'] === './cli.mjs', 'repo-foreman bin must point to ./cli.mjs')
 requireValue(Object.keys(packageJson.dependencies ?? {}).length === 0, 'runtime dependencies must remain empty')
 requireValue(packageJson.engines?.node === '>=22.14.0', 'Node engine must be >=22.14.0')
 
