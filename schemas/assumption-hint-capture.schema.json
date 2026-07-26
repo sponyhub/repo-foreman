@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "question_item": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "text": { "type": "string", "minLength": 1 },
+            "severity": { "type": ["string", "null"], "enum": ["low", "medium", "high", "critical", null] },
+            "category": {
+              "type": ["string", "null"],
+              "enum": ["security", "privacy", "gdpr", "compliance", "functional", "other", null]
+            },
+            "requires_user_input": { "type": ["boolean", "null"] }
+          },
+          "required": ["text", "severity", "category", "requires_user_input"]
+        }
+      ]
+    }
+  },
+  "properties": {
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "task_hints": { "type": "array", "items": { "type": "string" } },
+    "notes": { "type": "array", "items": { "type": "string" } },
+    "questions": { "type": "array", "items": { "$ref": "#/$defs/question_item" } }
+  },
+  "required": ["assumptions", "task_hints", "notes", "questions"]
+}

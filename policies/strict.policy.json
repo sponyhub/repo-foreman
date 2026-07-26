@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "name": "strict",
+  "deny_substrings": ["rm -rf", "sudo", "ssh ", "scp ", "wget ", "nc ", "telnet "],
+  "deny_regex": ["\\bmkfs\\b", "\\bdd\\b.*\\bof="],
+  "deny_path_globs": [
+    "**/.env",
+    "**/.env.*",
+    "**/secrets/**",
+    "**/*.pem",
+    "**/*private*key*",
+    "**/id_rsa*",
+    "**/*credential*"
+  ],
+  "allow_path_globs": ["**/.env.example", "**/.env.sample"],
+  "deny_diff_regex": [
+    "AKIA[0-9A-Z]{16}",
+    "ASIA[0-9A-Z]{16}",
+    "sk-[A-Za-z0-9]{20,}",
+    "xox[baprs]-[A-Za-z0-9-]{10,}",
+    "-----BEGIN (RSA|EC|OPENSSH) PRIVATE KEY-----"
+  ],
+  "max_deleted_files": 0,
+  "max_synthetic_cycles": 3
+}

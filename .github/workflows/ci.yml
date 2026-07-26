@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+        node:
+          - 22
+          - 24
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install development dependencies
+        run: npm ci
+
+      - name: Check package metadata
+        run: npm run check:metadata
+
+      - name: Audit runtime dependency tree
+        run: npm audit --omit=dev --audit-level=high
+
+      # Jest currently carries upstream advisories in its transitive test toolchain.
+      # Report them without confusing dev-only packages with the zero-dependency runtime tarball.
+      - name: Report development dependency audit
+        continue-on-error: true
+        run: npm audit --audit-level=high
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Run isolated self-test
+        run: npm run self-test
+
+      - name: Inspect package contents
+        run: npm pack --dry-run
+
+      - name: Install and smoke-test packed CLI
+        run: npm run smoke:pack

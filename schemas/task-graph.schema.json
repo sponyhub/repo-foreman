@@ -1,0 +1,82 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "question_item": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "text": { "type": "string", "minLength": 1 },
+            "severity": { "type": ["string", "null"], "enum": ["low", "medium", "high", "critical", null] },
+            "category": {
+              "type": ["string", "null"],
+              "enum": ["security", "privacy", "gdpr", "compliance", "functional", "other", null]
+            },
+            "requires_user_input": { "type": ["boolean", "null"] }
+          },
+          "required": ["text", "severity", "category", "requires_user_input"]
+        }
+      ]
+    }
+  },
+  "properties": {
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": { "type": "string", "enum": ["pass", "needs_user_input", "blocked"] },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "questions": { "type": "array", "items": { "$ref": "#/$defs/question_item" } }
+      },
+      "required": ["status", "reasons", "questions"]
+    },
+    "execution_order": { "type": "array", "items": { "type": "string" } },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "type": { "type": "string", "enum": ["code", "tests", "docs", "refactor", "infra"] },
+          "description": { "type": "string" },
+          "acceptance_criteria": { "type": "array", "items": { "type": "string" } },
+          "dependencies": { "type": "array", "items": { "type": "string" } },
+          "risk_level": { "type": "string", "enum": ["low", "medium", "high"] },
+          "files": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "create": { "type": "array", "items": { "type": "string" } },
+              "modify": { "type": "array", "items": { "type": "string" } },
+              "delete": { "type": "array", "items": { "type": "string" } }
+            },
+            "required": ["create", "modify", "delete"]
+          },
+          "verification_commands": {
+            "type": "array",
+            "maxItems": 0,
+            "items": { "type": "string" },
+            "description": "Reserved field. PatchGantry injects only repository-owner verification commands after validating model output."
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "type",
+          "description",
+          "acceptance_criteria",
+          "dependencies",
+          "risk_level",
+          "files",
+          "verification_commands"
+        ]
+      }
+    }
+  },
+  "required": ["gate", "execution_order", "tasks"]
+}

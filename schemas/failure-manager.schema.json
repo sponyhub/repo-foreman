@@ -1,0 +1,60 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "question_item": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "text": { "type": "string", "minLength": 1 },
+            "severity": { "type": ["string", "null"], "enum": ["low", "medium", "high", "critical", null] },
+            "category": {
+              "type": ["string", "null"],
+              "enum": ["security", "privacy", "gdpr", "compliance", "functional", "other", null]
+            },
+            "requires_user_input": { "type": ["boolean", "null"] }
+          },
+          "required": ["text", "severity", "category", "requires_user_input"]
+        }
+      ]
+    }
+  },
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "retry",
+        "auto_answer_noncritical",
+        "escalate",
+        "abort",
+        "skip_task"
+      ]
+    },
+    "reason": { "type": "string" },
+    "review_feedback": { "type": "string" },
+    "verification_feedback": { "type": "string" },
+    "questions": { "type": "array", "items": { "$ref": "#/$defs/question_item" } },
+    "answers": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          { "type": "string" },
+          { "type": "boolean" }
+        ]
+      }
+    },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": [
+    "action",
+    "reason",
+    "review_feedback",
+    "verification_feedback",
+    "questions",
+    "answers",
+    "notes"
+  ]
+}

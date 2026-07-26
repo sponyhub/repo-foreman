@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "diagnosis": { "type": "string" },
+    "changes_made": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "file": { "type": "string" },
+          "change_summary": { "type": "string" }
+        },
+        "required": ["file", "change_summary"]
+      }
+    },
+    "recommended_rerun_commands": { "type": "array", "items": { "type": "string" } },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": ["diagnosis", "changes_made", "recommended_rerun_commands", "notes"]
+}

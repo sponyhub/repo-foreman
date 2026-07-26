@@ -1,0 +1,112 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "verdict": { "type": "string", "enum": ["approve", "revise", "block"] },
+    "summary": { "type": "string" },
+    "scope_alignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": { "type": "string", "enum": ["match", "partial", "mismatch"] },
+        "notes": { "type": "string" }
+      },
+      "required": ["status", "notes"]
+    },
+    "rubric": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "security": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fix", "na"] },
+            "notes": { "type": "string" }
+          },
+          "required": ["status", "notes"]
+        },
+        "functionality": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fix", "na"] },
+            "notes": { "type": "string" }
+          },
+          "required": ["status", "notes"]
+        },
+        "simplicity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fix", "na"] },
+            "notes": { "type": "string" }
+          },
+          "required": ["status", "notes"]
+        },
+        "speed": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fix", "na"] },
+            "notes": { "type": "string" }
+          },
+          "required": ["status", "notes"]
+        },
+        "quality": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fix", "na"] },
+            "notes": { "type": "string" }
+          },
+          "required": ["status", "notes"]
+        },
+        "gdpr": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fix", "na"] },
+            "notes": { "type": "string" }
+          },
+          "required": ["status", "notes"]
+        }
+      },
+      "required": ["security", "functionality", "simplicity", "speed", "quality", "gdpr"]
+    },
+    "changes_since_last_review": { "type": "string" },
+    "verification_summary": { "type": "string" },
+    "blocking_issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "severity": { "type": "string", "enum": ["low", "medium", "high"] },
+          "file": { "type": "string" },
+          "description": { "type": "string" },
+          "suggested_fix": { "type": "string" }
+        },
+        "required": ["id", "severity", "file", "description", "suggested_fix"]
+      }
+    },
+    "acknowledged_conflicts": { "type": "array", "items": { "type": "string" } },
+    "non_blocking_suggestions": { "type": "array", "items": { "type": "string" } },
+    "docs_impact": { "type": "array", "items": { "type": "string" } },
+    "security_privacy_concerns": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": [
+    "verdict",
+    "summary",
+    "scope_alignment",
+    "rubric",
+    "changes_since_last_review",
+    "verification_summary",
+    "blocking_issues",
+    "acknowledged_conflicts",
+    "non_blocking_suggestions",
+    "docs_impact",
+    "security_privacy_concerns"
+  ]
+}

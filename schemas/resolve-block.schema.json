@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "can_proceed": { "type": "boolean" },
+    "summary": { "type": "string" },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "mitigations": { "type": "array", "items": { "type": "string" } },
+    "task_hints": { "type": "array", "items": { "type": "string" } },
+    "remaining_blockers": { "type": "array", "items": { "type": "string" } },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": [
+    "can_proceed",
+    "summary",
+    "assumptions",
+    "mitigations",
+    "task_hints",
+    "remaining_blockers",
+    "notes"
+  ]
+}

@@ -1,0 +1,23 @@
+node_modules/
+coverage/
+
+# PatchGantry run artifacts and worktrees may contain sensitive context.
+.patch-gantry/
+.co-*/
+
+# Package and tool output.
+*.tgz
+*.log
+npm-debug.log*
+
+# Local configuration and secrets.
+.env
+.env.*
+!.env.example
+.npmrc
+
+# Editor and operating-system files.
+.DS_Store
+.idea/
+.vscode/
+*.swp

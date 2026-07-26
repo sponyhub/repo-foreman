@@ -1,0 +1,74 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "ready_for_dev_deploy": { "type": "boolean" },
+    "change_summary": { "type": "string" },
+    "files_changed": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": { "type": "string" },
+          "change_type": { "type": "string", "enum": ["added", "modified", "deleted"] },
+          "summary": { "type": "string" }
+        },
+        "required": ["path", "change_type", "summary"]
+      }
+    },
+    "docs_updated": { "type": "array", "items": { "type": "string" } },
+    "synthetic_tasks_blocked": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "reason": { "type": "string" },
+          "source_phase": { "type": "string" }
+        },
+        "required": ["id", "reason", "source_phase"]
+      }
+    },
+    "verification": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "command": { "type": "string" },
+          "result": { "type": "string", "enum": ["pass", "fail", "skipped"] }
+        },
+        "required": ["command", "result"]
+      }
+    },
+    "verification_failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "failure": { "type": "string" },
+          "status": { "type": "string", "enum": ["pre_existing", "introduced_by_task"] }
+        },
+        "required": ["failure", "status"]
+      }
+    },
+    "security_gdpr_notes": { "type": "array", "items": { "type": "string" } },
+    "residual_risks": { "type": "array", "items": { "type": "string" } },
+    "next_steps": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": [
+    "ready_for_dev_deploy",
+    "change_summary",
+    "files_changed",
+    "docs_updated",
+    "synthetic_tasks_blocked",
+    "verification",
+    "verification_failures",
+    "security_gdpr_notes",
+    "residual_risks",
+    "next_steps"
+  ]
+}

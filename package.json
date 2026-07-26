@@ -1,0 +1,81 @@
+{
+  "name": "patch-gantry",
+  "version": "0.1.0-beta.1",
+  "description": "Gated workflow for Codex CLI.",
+  "license": "Apache-2.0",
+  "bin": {
+    "patch-gantry": "./cli.mjs"
+  },
+  "files": [
+    "cli.mjs",
+    "self-test.mjs",
+    "lib/**/*.mjs",
+    "policies/*.json",
+    "prompts/*.md",
+    "schemas/*.json",
+    "docs/**/*.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md"
+  ],
+  "scripts": {
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand",
+    "test:coverage": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --coverage",
+    "self-test": "node ./self-test.mjs",
+    "check:metadata": "node ./scripts/check-package.mjs",
+    "check:pack": "npm pack --dry-run",
+    "smoke:pack": "node ./scripts/smoke-packed-cli.mjs",
+    "check": "npm run check:metadata && npm test && npm run self-test && npm run check:pack && npm run smoke:pack",
+    "prepublishOnly": "npm run check"
+  },
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "os": [
+    "darwin",
+    "linux"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "codex",
+    "cli",
+    "agent",
+    "workflow",
+    "orchestration",
+    "code-review",
+    "git-worktree"
+  ],
+  "devDependencies": {
+    "ajv": "^8.20.0",
+    "jest": "^30.4.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/__tests__/**/*.test.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/.patch-gantry/"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/.patch-gantry/"
+    ],
+    "collectCoverageFrom": [
+      "lib/**/*.mjs",
+      "cli.mjs",
+      "!lib/self-test.mjs"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 37,
+        "functions": 63,
+        "lines": 45,
+        "statements": 45
+      }
+    }
+  }
+}

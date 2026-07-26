@@ -1,0 +1,96 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "question_item": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "text": { "type": "string", "minLength": 1 },
+            "severity": { "type": ["string", "null"], "enum": ["low", "medium", "high", "critical", null] },
+            "category": {
+              "type": ["string", "null"],
+              "enum": ["security", "privacy", "gdpr", "compliance", "functional", "other", null]
+            },
+            "requires_user_input": { "type": ["boolean", "null"] }
+          },
+          "required": ["text", "severity", "category", "requires_user_input"]
+        }
+      ]
+    }
+  },
+  "properties": {
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": { "type": "string", "enum": ["pass", "needs_user_input", "blocked"] },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "questions": { "type": "array", "items": { "$ref": "#/$defs/question_item" } }
+      },
+      "required": ["status", "reasons", "questions"]
+    },
+    "architecture_summary": { "type": "string" },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "decision": { "type": "string" },
+          "rationale": { "type": "string" },
+          "alternatives_considered": { "type": "array", "items": { "type": "string" } },
+          "impacts": { "type": "array", "items": { "type": "string" } },
+          "security_privacy_notes": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": [
+          "id",
+          "decision",
+          "rationale",
+          "alternatives_considered",
+          "impacts",
+          "security_privacy_notes"
+        ]
+      }
+    },
+    "interface_boundaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "kind": { "type": "string", "enum": ["api", "module", "cli", "db", "job", "ui"] },
+          "location": { "type": "string" },
+          "contract": { "type": "string" }
+        },
+        "required": ["name", "kind", "location", "contract"]
+      }
+    },
+    "test_strategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "unit": { "type": "array", "items": { "type": "string" } },
+        "integration": { "type": "array", "items": { "type": "string" } },
+        "e2e": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["unit", "integration", "e2e"]
+    },
+    "docs_to_update": { "type": "array", "items": { "type": "string" } },
+    "open_questions": { "type": "array", "items": { "$ref": "#/$defs/question_item" } }
+  },
+  "required": [
+    "gate",
+    "architecture_summary",
+    "decisions",
+    "interface_boundaries",
+    "test_strategy",
+    "docs_to_update",
+    "open_questions"
+  ]
+}
