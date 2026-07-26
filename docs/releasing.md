@@ -32,21 +32,23 @@ Prereleases use Semantic Versioning identifiers and the npm `next` dist-tag. The
 
 ## Publish
 
-Before the first publication, the owner must configure npm package ownership, account protection, and provenance or trusted publishing. Confirm that the public source metadata in `package.json` matches the repository being released.
+For the bootstrap publication, enable two-factor authentication on the intended owner's npm account and verify the package name, account, registry, public source metadata, and tarball. An unpublished package does not yet have owner or trusted-publisher settings, and a local manual publication cannot generate npm provenance. RepoForeman uses an explicitly authorized interactive publication for this one bootstrap version; record that it does not carry provenance.
 
 For an authorized beta publication:
 
 ```bash
-npm publish --tag next
+npm publish --tag next --access public
 ```
 
 Never run `npm publish` from an unreviewed worktree or with an unexpected npm account. Verify with `npm whoami`, `npm config get registry`, the exact tarball contents, and the version immediately before publishing.
 
-Publishing remains manual. Do not add an automated publication workflow without explicit maintainer approval.
+Every publication requires explicit human authorization. Do not add or enable a publication workflow without explicit maintainer approval, and do not configure one to publish on ordinary pushes or tags.
 
 ## After publication
 
-1. Verify that `npm view repo-foreman@next` reports the expected version, license, engines, owners, integrity, and zero runtime dependencies.
+1. Verify that `npm view repo-foreman@next` reports the expected version, license, engines, integrity, repository, and zero runtime dependencies, and that `npm owner ls repo-foreman` reports the intended owner.
 2. Install by exact version in a clean environment and run help, doctor, and the package smoke test.
 3. Create release notes from the changelog without overstating platform or security guarantees.
 4. Keep the prior prerelease available long enough to diagnose regressions; use npm deprecation messages rather than unpublishing except for urgent security or legal reasons.
+5. Require two-factor authentication and disallow tokens in the npm package's publishing-access settings.
+6. Before any later release, configure trusted publishing with the `npm publish` action allowed for an explicitly approved, manually initiated workflow using npm 11.5.1 or newer on a GitHub-hosted runner or GitLab.com shared runner. npm then generates provenance automatically. Until that setup has been reviewed and enabled, later publication is blocked.

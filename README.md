@@ -22,7 +22,7 @@ The current release is `0.1.0-beta.1`. Treat it as an early public beta:
 - macOS and Linux are the supported platforms.
 - The tool is designed for trusted repositories and trusted task descriptions.
 - Files under `lib/` are internal implementation details, not a stable JavaScript API.
-- The source repository is public at [sponyhub/repo-foreman](https://github.com/sponyhub/repo-foreman). The npm package has not been published yet; verify provenance before installing anything under this name.
+- The canonical source repository is [sponyhub/repo-foreman](https://github.com/sponyhub/repo-foreman). npm prereleases use the `next` dist-tag.
 
 ## What RepoForeman adds
 
@@ -114,7 +114,7 @@ Codex CLI evolves independently from RepoForeman. After installation, run `repo-
 
 ### From a local package tarball
 
-Use this reproducible path before an npm release exists:
+Use this reproducible path to install a locally packed build:
 
 ```bash
 # In the RepoForeman source checkout
@@ -140,9 +140,9 @@ npm link
 repo-foreman doctor
 ```
 
-### From npm after publication
+### From npm
 
-The beta should be published under the `next` dist-tag. These commands become valid only after a maintainer has published the package:
+Beta releases use the `next` dist-tag:
 
 ```bash
 # One-off
