@@ -5,6 +5,7 @@ RepoForeman is an early public beta. Small, focused changes with tests and clear
 ## Before opening a change
 
 - Search existing issues and discussions when a public repository is available.
+- Submit changes through a pull request; direct updates to `main` are blocked.
 - For a behavior change, describe the user problem and expected CLI or artifact contract.
 - For a security issue, follow [SECURITY.md](SECURITY.md) and do not open a public report.
 - Do not include proprietary source, customer data, run artifacts, credentials, or private prompts in fixtures.
@@ -40,12 +41,15 @@ Add or update tests for parsing, state transitions, policy behavior, artifact ha
 
 Before requesting review, confirm:
 
+- `npm run check` passes locally;
 - unit tests pass without a real Codex account;
 - the isolated self-test passes;
 - `npm pack --dry-run` contains runtime assets and excludes tests, local artifacts, and credentials;
 - runtime dependencies remain empty;
 - no source-specific names or paths have been reintroduced;
 - security and privacy consequences are described.
+
+GitHub Actions repeats `npm run check` on macOS and Linux with Node.js 22.14 and 24. The pull request must have a successful `Required CI` result and all review conversations must be resolved before merge. The current beta does not require an approving review, but maintainers may still request one for higher-risk changes.
 
 ## Commit and review scope
 

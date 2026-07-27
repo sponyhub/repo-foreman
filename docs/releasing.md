@@ -18,6 +18,8 @@ Prereleases use Semantic Versioning identifiers and the npm `next` dist-tag. The
    npm run check
    ```
 
+   GitHub Actions runs the same command on macOS and Linux with Node.js 22.14 and 24 for pull requests and pushes to `main`. Confirm that the release commit has a successful `Required CI` result. CI supplements the manual release gate and does not replace any supported-platform run recorded for the release.
+
 5. Inspect `npm pack --dry-run` and the actual tarball. It must include the CLI, runtime modules, policies, prompts, schemas, license, and documentation. It must exclude tests, coverage, run artifacts, worktrees, `.env*`, `.npmrc`, and source-repository data.
 6. Install the tarball into a disposable Git repository and run:
 
