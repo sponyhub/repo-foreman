@@ -7,6 +7,7 @@ All notable changes to this project are documented in this file. The format is b
 ### Documentation
 
 - Documented npm's required bootstrap `latest` tag and the rule that later beta releases move only `next` until a stable release is approved.
+- Added direct npm package discovery and clarified that run artifacts and worktrees are intentionally retained until operator cleanup.
 
 ## [0.1.0-beta.1] - 2026-07-27
 

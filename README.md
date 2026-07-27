@@ -1,5 +1,7 @@
 # RepoForeman
 
+[![npm next version](https://img.shields.io/npm/v/repo-foreman/next?label=npm%20next)](https://www.npmjs.com/package/repo-foreman)
+
 > A deterministic delivery pipeline and governance layer for Codex CLI.
 
 RepoForeman turns a development brief into a structured engineering workflow: analysis, architecture, task planning, implementation, independent review, recovery, and final verification. It runs locally around `codex exec`, isolates work in Git worktrees by default, and records enough state to inspect, explain, or resume a run.
@@ -22,7 +24,8 @@ The current release is `0.1.0-beta.1`. Treat it as an early public beta:
 - macOS and Linux are the supported platforms.
 - The tool is designed for trusted repositories and trusted task descriptions.
 - Files under `lib/` are internal implementation details, not a stable JavaScript API.
-- The canonical source repository is [sponyhub/repo-foreman](https://github.com/sponyhub/repo-foreman). npm prereleases use the `next` dist-tag.
+- The canonical source repository is [sponyhub/repo-foreman](https://github.com/sponyhub/repo-foreman), and the published package is [repo-foreman on npm](https://www.npmjs.com/package/repo-foreman).
+- Install prereleases explicitly from the `next` dist-tag. npm requires a bootstrap `latest` tag, so it also points to `0.1.0-beta.1`; later betas move only `next` until a stable release is approved.
 
 ## What RepoForeman adds
 
@@ -316,7 +319,7 @@ Artifacts may include:
 - model responses, assumptions, and review findings;
 - failures, retry events, and verification results.
 
-Never include secrets, tokens, customer data, or unnecessary personal information in task descriptions. Keep `.repo-foreman/` out of Git and backups unless retention is intentional. Remove run data according to your own retention policy after it is no longer needed.
+Never include secrets, tokens, customer data, or unnecessary personal information in task descriptions. Keep `.repo-foreman/` out of Git and backups unless retention is intentional. RepoForeman preserves run artifacts and registered worktrees so `status`, `explain`, and `resume` remain available; inspect them before cleanup, then remove abandoned worktrees and run data according to your own retention policy.
 
 See [Artifacts and privacy](docs/artifacts-and-privacy.md) for cleanup and incident guidance.
 
