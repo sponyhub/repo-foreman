@@ -3,19 +3,29 @@
  */
 
 describe('codex exec arg construction', () => {
-  test('requires the public Codex exec flags used by RepoForeman', async () => {
+  test('requires the public Codex root and exec flags used by RepoForeman', async () => {
     const { assessCodexCliContract } = await import('../lib/codex.mjs')
     const supported = assessCodexCliContract({
       cliVersion: 'codex-cli test',
-      execHelpText:
-        '--ask-for-approval --cd --json --output-last-message --output-schema --sandbox --search',
+      rootHelpText: '--ask-for-approval --search',
+      execHelpText: '--cd --json --output-last-message --output-schema --sandbox',
     })
-    const unsupported = assessCodexCliContract({ execHelpText: '--json --sandbox' })
+    const unsupported = assessCodexCliContract({
+      rootHelpText: '',
+      execHelpText: '--json --sandbox',
+    })
+    const misplaced = assessCodexCliContract({
+      rootHelpText: '--cd --json --output-last-message --output-schema --sandbox',
+      execHelpText: '--ask-for-approval --search',
+    })
 
     expect(supported).toMatchObject({ supported: true, missingFlags: [] })
     expect(unsupported.supported).toBe(false)
+    expect(unsupported.missingFlags).toContain('--ask-for-approval')
     expect(unsupported.missingFlags).toContain('--output-schema')
     expect(unsupported.missingFlags).toContain('--search')
+    expect(misplaced.supported).toBe(false)
+    expect(misplaced.missingFlags).toEqual(expect.arrayContaining(['--ask-for-approval', '--cd', '--search']))
   })
 
   test('classifies current CLI help as incompatible with true live in-place structured interaction', async () => {
@@ -66,9 +76,13 @@ Options:
     })
 
     const modelFlagIndex = args.indexOf('--model')
+    const execIndex = args.indexOf('exec')
+    const approvalFlagIndex = args.indexOf('--ask-for-approval')
     expect(modelFlagIndex).toBeGreaterThanOrEqual(0)
     expect(args[modelFlagIndex + 1]).toBe('gpt-5.6-sol')
     expect(args).toEqual(expect.arrayContaining(['--ask-for-approval', 'on-request']))
+    expect(approvalFlagIndex).toBeLessThan(execIndex)
+    expect(args).toContain('approval_policy="on-request"')
     expect(args).toContain('sandbox_workspace_write.network_access=false')
   })
 
@@ -100,8 +114,9 @@ Options:
       search: true,
     })
 
-    expect(args[0]).toBe('exec')
+    expect(args.indexOf('--search')).toBeLessThan(args.indexOf('exec'))
     expect(args).toContain('--search')
+    expect(args).toContain('web_search="live"')
     expect(args).not.toContain('web_search_request')
   })
 
@@ -116,8 +131,9 @@ Options:
       search: false,
     })
 
-    expect(args[0]).toBe('exec')
+    expect(args.indexOf('--ask-for-approval')).toBeLessThan(args.indexOf('exec'))
     expect(args).toContain('web_search="disabled"')
+    expect(args).not.toContain('web_search="live"')
     expect(args).not.toContain('--search')
     expect(args).not.toContain('web_search_request')
   })

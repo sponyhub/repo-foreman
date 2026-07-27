@@ -78,7 +78,7 @@ repo-foreman run \
   --task-file ./task.md
 ```
 
-RepoForeman does not guarantee that every Codex version or account supports every model or effort value. `doctor` validates the required `codex exec` flag contract; the underlying Codex CLI error is authoritative for model availability.
+RepoForeman does not guarantee that every Codex version or account supports every model or effort value. `doctor` validates the required top-level and `codex exec` option contract; the underlying Codex CLI error is authoritative for model availability.
 
 RepoForeman CLI flags take precedence over its built-in defaults. Because RepoForeman always supplies explicit model settings, `model` and `model_reasoning_effort` from project or global Codex configuration do not change a RepoForeman run. They still apply to direct Codex sessions. Save persistent RepoForeman overrides in a repository script as described in [Easy per-repository configuration](easy-configuration.md).
 

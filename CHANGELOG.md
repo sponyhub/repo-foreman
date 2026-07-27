@@ -4,7 +4,7 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
-## [0.1.0-beta.1] - 2026-07-26
+## [0.1.0-beta.1] - 2026-07-27
 
 ### Added
 
@@ -27,6 +27,7 @@ All notable changes to this project are documented in this file. The format is b
 
 ### Fixed
 
+- Passed Codex approval and web-search options before `exec` to support Codex CLI 0.145.0's global-option layout.
 - Marked ESM-based test suites explicitly so release checks run correctly on supported Node.js 22 and 24 versions.
 - Terminated owner-provided shell command process groups on interruption and timeout so descendant processes do not outlive the command on macOS or Linux.
 
