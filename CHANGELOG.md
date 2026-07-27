@@ -4,10 +4,18 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+### Added
+
+- Added pull-request and `main` CI that runs the complete repository check on macOS and Linux with Node.js 22.14 and 24.
+
 ### Documentation
 
 - Documented npm's required bootstrap `latest` tag and the rule that later beta releases move only `next` until a stable release is approved.
 - Added direct npm package discovery and clarified that run artifacts and worktrees are intentionally retained until operator cleanup.
+
+### Security
+
+- Enabled private vulnerability reporting, Dependabot alerts and security updates, protected `main` through pull requests, and required the CI aggregate check before merge.
 
 ## [0.1.0-beta.1] - 2026-07-27
 

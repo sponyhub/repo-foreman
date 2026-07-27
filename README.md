@@ -1,6 +1,7 @@
 # RepoForeman
 
 [![npm next version](https://img.shields.io/npm/v/repo-foreman/next?label=npm%20next)](https://www.npmjs.com/package/repo-foreman)
+[![CI](https://github.com/sponyhub/repo-foreman/actions/workflows/ci.yml/badge.svg)](https://github.com/sponyhub/repo-foreman/actions/workflows/ci.yml)
 
 > A deterministic delivery pipeline and governance layer for Codex CLI.
 
@@ -97,7 +98,7 @@ Every loop has a configured attempt budget. Repeated failure becomes a visible g
 
 ## Requirements
 
-- Node.js `22.14.0` or newer. Release verification should cover Node.js 22 and 24 manually.
+- Node.js `22.14.0` or newer. CI covers Node.js 22 and 24 on macOS and Linux; release verification still repeats that matrix manually.
 - npm compatible with the selected Node.js release.
 - Git with worktree support.
 - Codex CLI installed and available as `codex`.
@@ -353,8 +354,8 @@ RepoForeman does not enforce a monetary budget. Before a broad run:
 
 | Component | Status |
 | --- | --- |
-| macOS with Node.js 22/24 | Supported; verify manually before release |
-| Linux with Node.js 22/24 | Supported; verify manually before release |
+| macOS with Node.js 22/24 | Supported; covered by CI and verified manually before release |
+| Linux with Node.js 22/24 | Supported; covered by CI and verified manually before release |
 | Windows native | Not supported by this release |
 | WSL | Not currently supported or included in release verification |
 | Codex CLI | External prerequisite; capabilities checked by `doctor` |
@@ -375,6 +376,8 @@ Run the complete release gate with:
 ```bash
 npm run check
 ```
+
+Pull requests and pushes to `main` run the same complete check on macOS and Linux with Node.js 22.14 and 24. The stable `Required CI` job summarizes the matrix for branch protection. CI supplements the manual release matrix; it does not authorize an npm publication.
 
 The published runtime is designed to use only Node.js built-ins. Jest and Ajv are development-only dependencies and are not installed as runtime dependencies for consumers.
 

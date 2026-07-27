@@ -15,7 +15,7 @@ During the `0.x` period, fixes may require a breaking configuration or artifact-
 
 Do not disclose a suspected vulnerability, exploit, secret, or sensitive artifact in a public issue.
 
-Use GitHub private vulnerability reporting from the repository's **Security** tab when it is available. If that channel is not enabled, contact the repository owner privately using the contact method displayed on the owner's profile. Include:
+Use GitHub private vulnerability reporting from the repository's **Security** tab. It is enabled for the canonical public repository. If GitHub does not offer that channel, contact the repository owner privately using the contact method displayed on the owner's profile. Include:
 
 - affected RepoForeman version and platform;
 - a minimal reproduction using synthetic data;
@@ -64,6 +64,8 @@ After a run:
 
 The published runtime is intended to have zero npm dependencies and uses Node.js built-ins. Development dependencies are not part of the runtime trust claim. RepoForeman invokes external programs including Git, Codex CLI, the shell, and repository-defined tools; each has its own dependency and network behavior.
 
-The beta's Jest test toolchain currently has upstream transitive advisories reported by a full `npm audit`; those packages are not included in the published runtime tarball. The manual release checklist treats `npm audit --omit=dev --audit-level=high` as the blocking runtime gate and records the full development audit separately. Contributors still execute the development toolchain, so maintainers must reassess these advisories on every Jest update and should not use unreviewed test inputs.
+The beta's Jest test toolchain currently has upstream transitive advisories reported by a full `npm audit`; those packages are not included in the published runtime tarball. The manual release checklist treats `npm audit --omit=dev --audit-level=high` as the blocking runtime gate and records the full development audit separately. Dependabot alerts and security updates are enabled for the canonical repository; generated updates remain ordinary pull requests and are never auto-merged. Contributors still execute the development toolchain, so maintainers must reassess these advisories on every Jest update and should not use unreviewed test inputs.
+
+Pull-request CI executes repository code on ephemeral GitHub-hosted runners with read-only repository permissions, no persisted checkout credential, and no publication secrets. It is not a safe environment for arbitrary secrets or production credentials, and it does not replace the separately authorized release process.
 
 Web search being disabled does not prove that every child process is offline. Repository-owner verification commands execute through the host shell outside the Codex sandbox, with a filtered environment but ordinary host process and network permissions. Model-proposed task verification commands are rejected and replaced with the configured owner command. Enforce external network or process isolation when it is required.
