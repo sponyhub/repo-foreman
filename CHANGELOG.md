@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+### Documentation
+
+- Documented npm's required bootstrap `latest` tag and the rule that later beta releases move only `next` until a stable release is approved.
+
 ## [0.1.0-beta.1] - 2026-07-27
 
 ### Added

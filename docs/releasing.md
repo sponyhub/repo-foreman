@@ -4,7 +4,7 @@ This document describes the public beta release process. The source repository i
 
 ## Beta policy
 
-Prereleases use Semantic Versioning identifiers and the npm `next` dist-tag. The first candidate is `0.1.0-beta.1`. The stable `latest` tag should not be used until the beta has been tested across multiple unrelated repositories.
+Prereleases use Semantic Versioning identifiers and the npm `next` dist-tag. The first candidate is `0.1.0-beta.1`. npm requires every package to have a `latest` tag, so the bootstrap publication also leaves `latest` pointing to the first beta. Later beta publications move only `next`; replace `latest` only when a stable release has been tested across multiple unrelated repositories.
 
 ## Prepare
 
@@ -46,7 +46,7 @@ Every publication requires explicit human authorization. Do not add or enable a 
 
 ## After publication
 
-1. Verify that `npm view repo-foreman@next` reports the expected version, license, engines, integrity, repository, and zero runtime dependencies, and that `npm owner ls repo-foreman` reports the intended owner.
+1. Verify that `npm view repo-foreman@next` reports the expected version, license, engines, integrity, repository, and zero runtime dependencies, and that `npm owner ls repo-foreman` reports the intended owner. For the bootstrap beta, also confirm that npm's required `latest` tag points to the same first version; later betas must move only `next` until a stable release is approved.
 2. Install by exact version in a clean environment and run help, doctor, and the package smoke test.
 3. Create release notes from the changelog without overstating platform or security guarantees.
 4. Keep the prior prerelease available long enough to diagnose regressions; use npm deprecation messages rather than unpublishing except for urgent security or legal reasons.
