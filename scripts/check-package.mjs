@@ -36,6 +36,10 @@ requireValue(packageJson.license === 'Apache-2.0', 'package license must be Apac
 requireValue(packageJson.bin?.['repo-foreman'] === './cli.mjs', 'repo-foreman bin must point to ./cli.mjs')
 requireValue(Object.keys(packageJson.dependencies ?? {}).length === 0, 'runtime dependencies must remain empty')
 requireValue(packageJson.engines?.node === '>=22.14.0', 'Node engine must be >=22.14.0')
+requireValue(
+  packageJson.jest?.testMatch?.includes('<rootDir>/__tests__/**/*.test.mjs'),
+  'Jest must include ESM test files',
+)
 
 for (const relativePath of [
   'cli.mjs',

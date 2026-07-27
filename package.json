@@ -63,7 +63,8 @@
   "jest": {
     "testEnvironment": "node",
     "testMatch": [
-      "<rootDir>/__tests__/**/*.test.js"
+      "<rootDir>/__tests__/**/*.test.js",
+      "<rootDir>/__tests__/**/*.test.mjs"
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",

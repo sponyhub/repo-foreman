@@ -25,6 +25,11 @@ All notable changes to this project are documented in this file. The format is b
 - Generalized model, reasoning, verification, and environment behavior for use across repositories.
 - Introduced safer public defaults for branch naming, search, sandbox scope, policy selection, and environment-file copying.
 
+### Fixed
+
+- Marked ESM-based test suites explicitly so release checks run correctly on supported Node.js 22 and 24 versions.
+- Terminated owner-provided shell command process groups on interruption and timeout so descendant processes do not outlive the command on macOS or Linux.
+
 ### Removed
 
 - Removed GitHub Actions automation; repository and release verification are manual.

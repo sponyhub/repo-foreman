@@ -240,6 +240,8 @@ repo-foreman run \
 
 Terminal commands include `/help`, `/status`, `/pause`, `/resume`, `/abort`, and `/replan [guidance]`. Steering is applied at supported boundaries and may interrupt and replay work. It is not guaranteed to inject text into an already running `codex exec` process.
 
+When an owner-provided shell command is interrupted or times out on macOS or Linux, RepoForeman signals the command's process group so descendant processes do not keep the command alive.
+
 ### Configure model behavior
 
 RepoForeman uses a quality-first default of `gpt-5.6-sol` with `xhigh` reasoning effort. It passes both settings explicitly to Codex so a run does not silently change when the operator's global Codex configuration changes. Override either value for a specific run when cost, latency, or model availability requires it:
